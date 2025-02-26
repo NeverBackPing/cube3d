@@ -93,7 +93,7 @@ $(NAME): $(OBJS) $(LIBFT) $(PARSING)
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(PARSING) $(MLX_LIB) $(MLX) -o $(NAME)
 
 clean:
-	$(RM) $(OBJS) $(LIBFT_OBJS) $(PARSING_OBJS) $(GNL_OBJS)
+	$(RM) $(OBJS) $(LIBFT_OBJS) $(PARSING_OBJS)
 
 fclean: clean
 	$(RM) $(LIBFT) $(PARSING) $(MLX_LIB) mlx/libmlx_Linux.a $(NAME)
