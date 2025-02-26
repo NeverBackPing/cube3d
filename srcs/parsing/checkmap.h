@@ -21,4 +21,6 @@ int		checkmap(char **tab);
 void	handler_fd(char	*fd);
 //handler_input.c
 void	handler_argument(int ac);
+//ft_get_map.c
+
 #endif

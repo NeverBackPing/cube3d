@@ -30,6 +30,16 @@ PARSING_OBJS = $(PARSING_SRC:.c=.o)
 
 ######################## 📁 #############################
 
+GNL = srcs/dependency/get_next_line.a
+
+GNL_DIR = srcs/dependency/gnl
+
+GNL_SRC = $(shell ls $(GNL_DIR)/*.c)
+
+GNL_OBJS = $(GNL_SRC:.c=.o)
+
+######################## 📁 #############################
+
 MLX_LIB = mlx/libmlx.a
 
 MLX_DIR = mlx
@@ -46,7 +56,7 @@ OBJS = $(SRCS:.c=.o)
 
 ######################## 🧠 #############################
 
-INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(PARSING_DIR) -I$(MLX_DIR)
+INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(PARSING_DIR) -I$(GNL_DIR) -I$(MLX_DIR)
 
 ######################## 🎨 #############################
 
@@ -83,20 +93,23 @@ $(LIBFT): $(LIBFT_OBJS)
 $(PARSING): $(PARSING_OBJS)
 		ar rcs $(PARSING) $(PARSING_OBJS)
 
+$(GNL): $(GNL_OBJS)
+		ar rcs $(GNL) $(GNL_OBJS)
+
 $(MLX_LIB):
 	@$(MAKE) -C $(MLX_DIR)
 
 header:
 	@echo "$(GREEN)$$HEADER$(RESET)"
 
-$(NAME): $(OBJS) $(LIBFT) $(PARSING)
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(PARSING) $(MLX_LIB) $(MLX) -o $(NAME)
+$(NAME): $(OBJS) $(LIBFT) $(PARSING) $(GNL)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(PARSING) $(GNL) $(MLX_LIB) $(MLX) -o $(NAME)
 
 clean:
-	$(RM) $(OBJS) $(LIBFT_OBJS) $(PARSING_OBJS)
+	$(RM) $(OBJS) $(LIBFT_OBJS) $(PARSING_OBJS) $(GNL_OBJS)
 
 fclean: clean
-	$(RM) $(LIBFT) $(PARSING) $(MLX_LIB) mlx/libmlx_Linux.a $(NAME)
+	$(RM) $(LIBFT) $(PARSING) $(GNL) $(MLX_LIB) mlx/libmlx_Linux.a $(NAME)
 
 re: fclean all
 
