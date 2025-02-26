@@ -1,16 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checkmap.h                                         :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: simonp <simonp@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 16:20:35 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/02/26 16:23:05 by gtraiman         ###   ########.fr       */
+/*   Created: 2024/03/29 14:23:07 by sjossain          #+#    #+#             */
+/*   Updated: 2025/01/22 15:04:14 by simonp           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-# include <stdlib.h>
-# include <errno.h>
+#include <libft.h>
+
+char	*ft_strndup(const char *s, int n)
+{
+	char		*ret;
+
+	ret = (char *)malloc(n + 1);
+	if (ret == NULL)
+		return (NULL);
+	ft_strlcpy(ret, s, n + 1);
+	return (ret);
+}
