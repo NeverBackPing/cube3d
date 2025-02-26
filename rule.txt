@@ -1,0 +1,6 @@
+
+Forcement 1 sur :
+-Premiere et derniere ligne
+-Debut et fin de chaque ligne
+
+Forcement caractere au dessus et en dessous de chaque 0
