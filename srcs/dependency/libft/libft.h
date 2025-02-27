@@ -55,6 +55,7 @@ char			*ft_strnstr(const char *haystack, \
 					const char *needle, size_t len);
 int				ft_tolower(int c);
 int				ft_toupper(int c);
+void			*ft_realloc(void *ptr, size_t size);
 //FUNCTION ADD
 size_t			ft_array_len(char **array);
 char			**ft_split_token(const char *s, char delim);

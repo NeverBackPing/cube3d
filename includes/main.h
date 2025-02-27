@@ -23,6 +23,8 @@ typedef struct s_texture
 
 typedef struct s_map
 {
+	int		lenght;
+	int		lenght_index;
 	char	**map;
 } t_map;
 
@@ -33,8 +35,12 @@ typedef struct s_game
 	t_texture	texture;
 } t_game;
 
-//parsing/ft_get_map.c
+// parsing/ft_get_map.c
+void	alloc_map(t_game *game, t_map *map, int lengh, char *line);
 void	get_map(t_game *game, char *filename);
+void	start_cpy_map(t_game *game, t_map *map, char *line);
+// parsing/handler_fd.c
+void	close_fd(t_game *game);
 void	open_fd(t_game *game, char *filename);
 
 #endif
