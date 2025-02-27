@@ -16,7 +16,9 @@
 # include "../includes/main.h"
 
 //checkmap.c
-int		checkmap(char **tab);
+int	checkmap(char **tab);
+int	ft_cins(char *str, char c);
+int	ft_slen(char *s);
 //handler_fd.c
 void	handler_fd(char	*fd);
 //handler_input.c
