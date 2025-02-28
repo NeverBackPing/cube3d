@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checkmap.h"
+#include <checkmap.h>
 
 int	ft_slen(char *s)
 {
@@ -81,8 +81,8 @@ int checkmap(char **tab)
 // int main(int ac, char **av)
 // {
 //     if(ac < 2)
-//         return(printf("Error"));    
-//     char *tab[] = 
+//         return(printf("Error"));
+//     char *tab[] =
 //     {
 //         "11111111111111",
 //         "10010000001",

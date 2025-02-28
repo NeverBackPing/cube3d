@@ -1,4 +1,4 @@
-#include "checkmap.h"
+#include <checkmap.h>
 
 void	handler_argument(int ac)
 {

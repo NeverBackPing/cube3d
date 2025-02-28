@@ -22,7 +22,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <fcntl.h>
-# include "../includes/main.h"
+# include <../includes/main.h>
 
 
 char	*get_next_line(int fd);

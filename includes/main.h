@@ -7,9 +7,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include "../dependency/libft/libft.h"
-# include "../dependency/gnl/get_next_line.h"
-# include "../srcs/parsing/checkmap.h"
+# include <../dependency/libft/libft.h>
+# include <../dependency/gnl/get_next_line.h>
+# include <../srcs/parsing/checkmap.h>
 
 typedef struct s_texture
 {
