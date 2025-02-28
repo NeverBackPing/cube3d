@@ -6,7 +6,7 @@
 /*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:23:07 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/02/27 16:02:13 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/02/28 13:46:49 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_slen(char *s)
 	i = 0;
     if(!s)
         return(0);
-	while (s[i])
+    while (s[i])
 		i++;
 	return (i);
 }
@@ -77,19 +77,3 @@ int checkmap(char **tab)
         return(1);
     return(0);
 }
-
-// int main(int ac, char **av)
-// {
-//     if(ac < 2)
-//         return(printf("Error"));
-//     char *tab[] =
-//     {
-//         "11111111111111",
-//         "10010000001",
-//         "10100111111",
-//         "1100N1",
-//         "111111",
-//         NULL
-//     };
-//     printf("%d",checkmap(tab));
-// }

@@ -28,7 +28,7 @@ int	main(int ac, char **av)
 
 		!! the fd must be stored in the main structure game !!
 	*/
-	get_set_graph(&game, av[1]);
+	// get_set_graph(&game, av[1]);
 	get_map(&game, av[1]);
 	return (0);
 }
