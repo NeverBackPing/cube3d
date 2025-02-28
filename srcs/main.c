@@ -10,15 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <../includes/main.h>
+#include "../includes/main.h"
 
 int	main(int ac, char **av)
 {
-	t_game	game;
+	// t_game	game;
 
-	if (ac != 2)
-		handler_argument(ac);
-	handler_fd(av[1]);
+	// if (ac != 2)
+	// 	handler_argument(ac);
+	// handler_fd(av[1]);
+	(void)ac;
+	(void)av;
 	/*
 		1.	open the fd a first time to retrieve the size of the map, close the fd after.
 			and store it in length which is in the amap structure
@@ -29,6 +31,7 @@ int	main(int ac, char **av)
 		!! the fd must be stored in the main structure game !!
 	*/
 	// get_set_graph(&game, av[1]);
-	get_map(&game, av[1]);
+	ft_window();
+	// get_map(&game, av[1]);
 	return (0);
 }

@@ -1,4 +1,4 @@
-#include <checkmap.h>
+#include "../../includes/checkmap.h"
 
 void	close_fd(t_game *game)
 {

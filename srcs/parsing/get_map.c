@@ -1,4 +1,4 @@
-#include <checkmap.h>
+#include "../../includes/checkmap.h"
 
 bool	escape_sequences(char c)
 {

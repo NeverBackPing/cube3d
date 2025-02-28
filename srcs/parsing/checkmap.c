@@ -6,11 +6,11 @@
 /*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:23:07 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/02/28 13:46:49 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:06:36 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <checkmap.h>
+#include "../../includes/checkmap.h"
 
 int	ft_slen(char *s)
 {

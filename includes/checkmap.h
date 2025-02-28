@@ -13,7 +13,7 @@
 #ifndef CHECKMAP_H
 # define CHECKMAP_H
 
-# include <../includes/main.h>
+# include "main.h"
 
 //checkmap.c
 int	checkmap(char **tab);
