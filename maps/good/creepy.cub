@@ -1,7 +1,7 @@
-       NO         sprites/goat.xpm
-                EA sprites/image.xpm
-SO                  sprites/mystere.xpm
-WE sprites/sd97v6a9.xpm
+       NO         sprites/image.xpm
+                EA sprites/image2.xpm
+SO                  sprites/image3.xpm
+WE sprites/image2.xpm
 
 C 35,190,73
 F 15,6,40

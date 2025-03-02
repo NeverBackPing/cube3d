@@ -1,7 +1,7 @@
-NO sprites/north.xpm
-EA sprites/goat.xpm
-SO sprites/south.xpm
-WE sprites/west.xpm
+NO sprites/image.xpm
+EA sprites/image2.xpm
+SO sprites/image3.xpm
+WE sprites/image3.xpm
 
 C 35,190,73
 F 15,6,40

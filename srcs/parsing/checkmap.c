@@ -12,18 +12,6 @@
 
 #include <checkmap.h>
 
-int	ft_slen(char *s)
-{
-	int	i;
-
-	i = 0;
-    if(!s)
-        return(0);
-	while (s[i])
-		i++;
-	return (i);
-}
-
 int	ft_cins(char *str, char c)
 {
 	while (*str)
@@ -62,7 +50,7 @@ int checkmap(char **tab)
             {
                 if(tab[i][j] != '0')
                     cpt++;
-                if((ft_slen(tab[i - 1]) < j || ft_slen(tab[i + 1]) < j))
+                if(((int)ft_strlen(tab[i - 1]) < j || (int)ft_strlen(tab[i + 1]) < j))
                     return(1);
                 if(ft_cins("0NEWS1",tab[i - 1][j]) == 0 || ft_cins("0NEWS1",tab[i + 1][j]) == 0)
                     return(1);

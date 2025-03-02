@@ -48,7 +48,7 @@ MLX = -Lmlx -lX11 -lXext -lm
 
 ######################## 📁 #############################
 
-SRC = $(shell ls srcs/*.c)
+SRC = $(shell ls srcs/*.c) $(shell ls srcs/monitor/*.c)
 
 SRCS = ${SRC} $(LIBC) $(PARSING_SRC)
 

@@ -15,14 +15,19 @@
 
 # include <../includes/main.h>
 
-//checkmap.c
-int	checkmap(char **tab);
-int	ft_cins(char *str, char c);
-int	ft_slen(char *s);
-//handler_fd.c
-void	handler_fd(char	*fd);
-//handler_input.c
-void	handler_argument(int ac);
-//ft_get_map.c
+# define GRAPH_CHECK 6
 
+// checkmap.c
+int		checkmap(char **tab);
+int		ft_cins(char *str, char c);
+int		ft_slen(char *s);
+// handler_fd.c
+void	handler_fd(char	*fd);
+// handler_input.c
+void	handler_argument(int ac);
+// graph_utils.c
+int		find_first_word_end_index(const char *line);
+// get_rgb.c
+int		skip_sep(char *line, int i);
+int		skip_spaces(char *line, int i);
 #endif

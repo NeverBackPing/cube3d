@@ -21,6 +21,8 @@
 # include <limits.h>
 
 //LIBC and LIBBSD
+bool			ft_digit(int c);
+char			*ft_strstr(const char *haystack, const char *needle);
 bool			empty_space(char *srcs);
 void			*ft_memchr(const void *s, int c, size_t n);
 int				ft_memcmp(const void *s1, const void *s2, size_t n);

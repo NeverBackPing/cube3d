@@ -11,6 +11,8 @@ void	close_fd(t_game *game)
 
 void	open_fd(t_game *game, char *filename)
 {
+	if (game->fd > 0)
+		return ;
 	game->fd = -1;
 	game->fd = open(filename, O_RDONLY);
 	if (game->fd < 0)

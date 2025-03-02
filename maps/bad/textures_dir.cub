@@ -1,6 +1,6 @@
-NO sprites/north.xpm
-SO sprites/south.xpm
-WE sprites/west.xpm
+NO sprites/image.xpm
+SO sprites/image.xpm
+WE sprites/image.xpm
 EA sprites/
 
 F 20,20,20

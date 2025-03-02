@@ -123,7 +123,7 @@ char	*get_next_line(int fd)
 			break ;
 		printf("%s", line);
 
-		free(line);
+		free(game->line_save);
 	}
 	printf("-------------------\n");
 	if (line != NULL)
