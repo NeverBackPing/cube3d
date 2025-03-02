@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcmp_ascii.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simonp <simonp@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 16:08:46 by sjossain          #+#    #+#             */
-/*   Updated: 2025/02/02 22:00:24 by simonp           ###   ########.fr       */
+/*   Updated: 2025/02/28 16:55:12 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include "libft.h"
 
 int	ft_strcmp_ascii(const char *s1, int ascii)
 {

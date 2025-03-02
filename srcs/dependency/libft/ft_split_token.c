@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include "libft.h"
 
 static int	is_delim(char c, char delim, int in_double, int in_single)
 {

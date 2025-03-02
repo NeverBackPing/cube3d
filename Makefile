@@ -47,24 +47,30 @@ MLX_DIR = mlx
 MLX = -Lmlx -lX11 -lXext -lm
 
 ######################## 📁 #############################
+# On ajoute srcs/window/*.c pour compiler window.c
+SRC = $(shell ls srcs/*.c srcs/window/*.c)
 
+<<<<<<< HEAD
 SRC = $(shell ls srcs/*.c) $(shell ls srcs/monitor/*.c)
 
 SRCS = ${SRC} $(LIBC) $(PARSING_SRC)
+=======
+SRCS = $(SRC) $(LIBC) $(PARSING_SRC)
+>>>>>>> 1fa33ae49bc47c6b40d93c4f462518fa38a8fe5b
 
 OBJS = $(SRCS:.c=.o)
 
 ######################## 🧠 #############################
 
-INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(PARSING_DIR) -I$(GNL_DIR) -I$(MLX_DIR)
+INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(PARSING_DIR) -I$(GNL_DIR) -I$(MLX_DIR) -Isrcs/window/
 
 ######################## 🎨 #############################
 
-BLUE	=	\033[0;34m
-GREEN	=	\033[0;32m
-RED		=	\033[31m
-RESET	=	\033[0m
-YELLOW	=	\033[0;33m
+BLUE    =   \033[0;34m
+GREEN   =   \033[0;32m
+RED     =   \033[31m
+RESET   =   \033[0m
+YELLOW  =   \033[0;33m
 
 define HEADER
 
@@ -81,7 +87,7 @@ export HEADER
 ######################## 🗃️ #############################
 
 %.o: %.c
-	$(CC) $(CFLAGS)  $(INCLUDES) $(INC) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 ######################## 🎶🎹 ############################
 
@@ -103,13 +109,13 @@ header:
 	@echo "$(GREEN)$$HEADER$(RESET)"
 
 $(NAME): $(OBJS) $(LIBFT) $(PARSING) $(GNL)
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(PARSING) $(GNL) $(MLX_LIB) $(MLX) -o $(NAME)
+	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(PARSING) $(GNL) $(MLX_LIB) $(MLX) -o $(NAME)
 
 clean:
-	$(RM) $(OBJS) $(LIBFT_OBJS) $(PARSING_OBJS) $(GNL_OBJS)
+	@$(RM) $(OBJS) $(LIBFT_OBJS) $(PARSING_OBJS) $(GNL_OBJS)
 
 fclean: clean
-	$(RM) $(LIBFT) $(PARSING) $(GNL) $(MLX_LIB) mlx/libmlx_Linux.a $(NAME)
+	@$(RM) $(LIBFT) $(PARSING) $(GNL) $(MLX_LIB) mlx/libmlx_Linux.a $(NAME)
 
 re: fclean all
 

@@ -1,4 +1,4 @@
-#include <checkmap.h>
+#include "../../includes/checkmap.h"
 
 void	store_path_fd(t_game *game, char *line, char *set_graph)
 {

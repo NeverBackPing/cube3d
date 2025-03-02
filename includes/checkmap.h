@@ -13,7 +13,7 @@
 #ifndef CHECKMAP_H
 # define CHECKMAP_H
 
-# include <../includes/main.h>
+# include "main.h"
 
 # define GRAPH_CHECK 6
 

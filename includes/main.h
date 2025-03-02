@@ -7,9 +7,15 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <../dependency/libft/libft.h>
-# include <../dependency/gnl/get_next_line.h>
-# include <../srcs/parsing/checkmap.h>
+# include "../srcs/dependency/libft/libft.h"
+# include "../srcs/dependency/gnl/get_next_line.h"
+# include "checkmap.h"
+# include "../mlx/mlx.h"
+# include "../srcs/window/window.h"
+
+# include <X11/X.h>
+# include <X11/keysym.h>
+
 
 typedef struct s_texture
 {
