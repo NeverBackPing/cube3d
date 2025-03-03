@@ -49,6 +49,7 @@ typedef struct s_game
 
 // monitor/init_struct.c
 void	init_struct(t_game *game);
+void	free_ressource(t_game *game);
 // parsing/ft_get_map.c
 void	alloc_map(t_game *game, t_map *map, int lengh, char *line);
 bool	escape_sequences(char c);
@@ -62,8 +63,6 @@ void	alloc_graph_set(t_game *game, char *file_xpm, char *set_graph);
 void	check_xpm(t_game *game, char *line, int start, int end);
 void	check_is_fail(t_game *game, char *str);
 int		find_index(char *line, char *str);
-// parsing/graph_utils.c
-void	free_ressource(t_game *game);
 // parsing/handler_fd.c
 void	close_fd(t_game *game);
 void	open_fd(t_game *game, char *filename);

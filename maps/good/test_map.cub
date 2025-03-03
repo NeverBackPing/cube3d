@@ -1,7 +1,7 @@
-NO sprites/north.xpm
-SO sprites/south.xpm
-WE sprites/west.xpm
-EA sprites/east.xpm
+NO sprites/image.xpm
+SO sprites/image.xpm
+WE sprites/image.xpm
+EA sprites/image.xpm
 
 F 18,53,25
 C 153,204,255

@@ -22,7 +22,7 @@ int	main(int ac, char **av)
 	handler_fd(av[1]);
 	get_set_graph(&game, av[1]);
 	get_lenght_map(&game);
-	//get_map(&game);
+	get_map(&game);
 	//ft_window();
 	free_ressource(&game);
 	return (0);
