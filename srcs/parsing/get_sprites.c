@@ -52,7 +52,9 @@ void	check_xpm(t_game *game, char *line, int start, int end)
 	if (fd < 0)
 	{
 		free(game->line_save);
-		printf("\033[0;31mError\033[0m: Sorry I can't open $%s$\n", file_xpm);
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry I can't open ", 2);
+		ft_putstr_fd(file_xpm, 2);
+		ft_putstr_fd("\n", 2);
 		free_ressource(game);
 		exit(0);
 	}
@@ -66,7 +68,7 @@ void	check_is_fail(t_game *game, char *str)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		printf("\033[0;31mError\033[0m: Fail malloc\n");
+		ft_putstr_fd("\033[0;31mError\033[0m: Fail malloc\n", 2);
 		exit(0);
 	}
 }
@@ -78,7 +80,7 @@ void	alloc_graph_set(t_game *game, char *file_xpm, char *set_graph)
 		free(game->line_save);
 		free_ressource(game);
 		free(file_xpm);
-		printf("\033[0;31mError\033[0m: Sorry, too many graphics setting detected !\n");
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, too many graphics setting detected !\n", 2);
 		exit(0);
 	}
 	if (!ft_strcmp(set_graph,"NO"))

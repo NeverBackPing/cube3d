@@ -32,7 +32,7 @@ void	alloc_map(t_game *game, t_map *map, int lengh, char *line)
 			free(game->texture.east_texture);
 			free(game->texture.south_texture);
 			free(game->texture.west_texture);
-			printf("\033[0;31mError\033[0m: Fail malloc \n");
+			ft_putstr_fd("\033[0;31mError\033[0m: Fail malloc \n", 2);
 			exit(0);
 		}
 		ft_strlcpy(map->map[map->lenght_index], line, lengh);

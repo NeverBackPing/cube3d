@@ -15,8 +15,8 @@
 void	handler_argument(int ac)
 {
 	if (ac < 2)
-		printf("\033[0;31mError\033[0m: Please make in input <./cube3d filename.cub>\n");
+		ft_putstr_fd("\033[0;31mError\033[0m: Please make in input <./cube3d filename.cub>\n", 2);
 	else
-		printf("\033[0;31mError\033[0m: Sorry to many argument !\n");
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry to many argument !\n", 2);
 	exit(0);
 }

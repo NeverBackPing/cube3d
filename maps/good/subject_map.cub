@@ -1,7 +1,7 @@
-NO sprites/z.xpm
-SO sprites/south.xpm
-WE sprites/west.xpm
-EA sprites/east.xpm
+NO sprites/image.xpm
+SO sprites/image.xpm
+WE sprites/image.xpm
+EA sprites/image.xpm
 
 F 220,100,0
 C 225,30,0

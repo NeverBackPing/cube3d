@@ -27,7 +27,7 @@ void	store_path_fd(t_game *game, char *line, char *set_graph)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		printf("\033[0;31mError\033[0m: Sorry, no file.xpm found !\n");
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, no file.xpm found !\n", 2);
 		exit(0);
 	}
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
@@ -61,7 +61,7 @@ void	check_sep(t_game *game, char *line)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		printf("\033[0;31mError\033[0m: Sorry, bad input RGB detected !\n");
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, bad input RGB detected !\n", 2);
 
 		exit(0);
 	}
@@ -76,7 +76,7 @@ void	store_rgb(t_game *game, char *line, char *set_graph)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		printf("\033[0;31mError\033[0m: Sorry, too many graphics setting detected !\n");
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, too many graphics setting detected !\n", 2);
 		exit(0);
 	}
 	check_sep(game, line);
@@ -100,7 +100,7 @@ void	check_set_graph(t_game *game, char *line, char *set_graph)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		printf("\033[0;31mError\033[0m: Sorry, wrong graphics setting detected !\n");
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong graphics setting detected !\n", 2);
 		exit(0);
 	}
 	if (ft_strstr(line, "NO"))
@@ -137,7 +137,7 @@ void	set_graphique(t_game *game, char *line)
 			{
 				free(game->line_save);
 				free_ressource(game);
-				printf("\033[0;31mError\033[0m: Sorry, wrong graphics setting detected !\n");
+				ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong graphics setting detected !\n", 2);
 				exit(0);
 			}
 		}
@@ -167,7 +167,7 @@ void	get_set_graph(t_game *game, char *filename)
 	if (game->texture.count !=  GRAPH_CHECK)
 	{
 		free_ressource(game);
-		printf("\033[0;31mError\033[0m: Sorry, wrong graphics setting detected!\n");
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong graphics setting detected!\n", 2);
 		exit(0);
 	}
 }
