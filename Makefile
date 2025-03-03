@@ -48,15 +48,10 @@ MLX = -Lmlx -lX11 -lXext -lm
 
 ######################## 📁 #############################
 # On ajoute srcs/window/*.c pour compiler window.c
-SRC = $(shell ls srcs/*.c srcs/window/*.c)
 
-<<<<<<< HEAD
-SRC = $(shell ls srcs/*.c) $(shell ls srcs/monitor/*.c)
+SRC = $(shell ls srcs/*.c) $(shell ls srcs/monitor/*.c) $(shell ls srcs/window/*.c)
 
 SRCS = ${SRC} $(LIBC) $(PARSING_SRC)
-=======
-SRCS = $(SRC) $(LIBC) $(PARSING_SRC)
->>>>>>> 1fa33ae49bc47c6b40d93c4f462518fa38a8fe5b
 
 OBJS = $(SRCS:.c=.o)
 
