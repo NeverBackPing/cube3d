@@ -3,30 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   checkmap.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:23:07 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/02/28 17:06:36 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/03 15:06:02 by sjossain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/checkmap.h"
 
-<<<<<<< HEAD
-=======
-int	ft_slen(char *s)
-{
-	int	i;
-
-	i = 0;
-    if(!s)
-        return(0);
-    while (s[i])
-		i++;
-	return (i);
-}
-
->>>>>>> 1fa33ae49bc47c6b40d93c4f462518fa38a8fe5b
 int	ft_cins(char *str, char c)
 {
 	while (*str)
