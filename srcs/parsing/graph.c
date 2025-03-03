@@ -150,7 +150,7 @@ void	get_set_graph(t_game *game, char *filename)
 	char	*line;
 
 	open_fd(game, filename);
-	while (1)
+	while (1 && game->texture.count != 6)
 	{
 		line = get_next_line(game->fd);
 		if (!line)
@@ -162,11 +162,12 @@ void	get_set_graph(t_game *game, char *filename)
 		}
 		if (line)
 			free(line);
+		line = NULL;
 	}
 	if (game->texture.count !=  GRAPH_CHECK)
 	{
 		free_ressource(game);
-		printf("\033[0;31mError\033[0m: Sorry, wrong graphics setting detected !\n");
+		printf("\033[0;31mError\033[0m: Sorry, wrong graphics setting detected!\n");
 		exit(0);
 	}
 }

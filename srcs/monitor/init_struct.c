@@ -11,6 +11,7 @@ void	init_struct(t_game *game)
 	game->texture.g = -1;
 	game->texture.b = -1;
 	game->texture.count = 0;
+	game->texture.count_player = 0;
 	game->texture.roof_color = -1;
 	game->texture.ground_color = -1;
 	game->texture.east_texture = NULL;

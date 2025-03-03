@@ -14,7 +14,7 @@
 
 bool	escape_sequences(char c)
 {
-	if (c == '\n' || c == '\r' || c == '\t')
+	if (c == '\n' || c == '\r'/* || c == '\t' */)
 		return (true);
 	return (false);
 }
@@ -69,7 +69,8 @@ bool	just_space(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ' && !escape_sequences(line[i]))
+		if (line[i] != ' ' && line[i] != '\t' &&\
+			 !escape_sequences(line[i]))
 			return (false);
 		i++;
 	}

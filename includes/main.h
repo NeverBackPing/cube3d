@@ -7,14 +7,13 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include "../srcs/dependency/libft/libft.h"
-# include "../srcs/dependency/gnl/get_next_line.h"
+# include <X11/X.h>
 # include "checkmap.h"
 # include "../mlx/mlx.h"
-# include "../srcs/window/window.h"
-
-# include <X11/X.h>
 # include <X11/keysym.h>
+# include "../srcs/dependency/libft/libft.h"
+# include "../srcs/dependency/gnl/get_next_line.h"
+# include "../srcs/window/window.h"
 
 
 typedef struct s_texture
@@ -23,6 +22,7 @@ typedef struct s_texture
 	int		g;
 	int		b;
 	int		count;
+	int		count_player;
 	char	*north_texture;
 	char	*east_texture;
 	char	*south_texture;
@@ -52,7 +52,7 @@ void	init_struct(t_game *game);
 // parsing/ft_get_map.c
 void	alloc_map(t_game *game, t_map *map, int lengh, char *line);
 bool	escape_sequences(char c);
-void	get_map(t_game *game, char *filename);
+void	get_map(t_game *game);
 bool	just_space(char *line);
 void	start_cpy_map(t_game *game, t_map *map, char *line);
 // parsing/graph.c
@@ -71,4 +71,6 @@ void	open_fd(t_game *game, char *filename);
 void	check_rgb(t_game *game);
 int		rgb_check(t_game *game, char *line, int i);
 void	set_color(t_game *game, char *set);
+// parsing/map_tool.c
+void	get_lenght_map(t_game *game);
 #endif
