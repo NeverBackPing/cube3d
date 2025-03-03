@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_map.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/03 17:16:55 by sjossain          #+#    #+#             */
+/*   Updated: 2025/03/03 17:16:55 by sjossain         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/checkmap.h"
 
 bool	escape_sequences(char c)
@@ -64,11 +76,10 @@ bool	just_space(char *line)
 	return (true);
 }
 
-void	get_map(t_game *game, char *filename)
+void	get_map(t_game *game)
 {
 	char	*line;
 
-	open_fd(game, filename);
 	while (1)
 	{
 		line = get_next_line(game->fd);

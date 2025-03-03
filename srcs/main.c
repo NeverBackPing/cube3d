@@ -21,8 +21,9 @@ int	main(int ac, char **av)
 		handler_argument(ac);
 	handler_fd(av[1]);
 	get_set_graph(&game, av[1]);
+	//get_lenght_map(&game);
+	get_map(&game);
 	ft_window();
 	free_ressource(&game);
-	// get_map(&game, av[1]);
 	return (0);
 }
