@@ -50,10 +50,12 @@ typedef struct s_game
 // monitor/init_struct.c
 void	init_struct(t_game *game);
 void	free_ressource(t_game *game);
+// parsing/check_map.c
+void	map_is_good(t_game *game);
 // parsing/ft_get_map.c
 void	alloc_map(t_game *game, t_map *map, int lengh, char *line);
 bool	escape_sequences(char c);
-void	get_map(t_game *game);
+void	get_map(t_game *game, char *filename);
 bool	just_space(char *line);
 void	start_cpy_map(t_game *game, t_map *map, char *line);
 // parsing/graph.c
@@ -71,5 +73,6 @@ void	check_rgb(t_game *game);
 int		rgb_check(t_game *game, char *line, int i);
 void	set_color(t_game *game, char *set);
 // parsing/map_tool.c
+void	map_init(t_game *game);
 void	get_lenght_map(t_game *game);
 #endif
