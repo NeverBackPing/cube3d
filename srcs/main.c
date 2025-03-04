@@ -26,6 +26,5 @@ int	main(int ac, char **av)
 	get_map(&game, av[1]);
 	map_is_good(&game);
 	ft_window();
-	free_ressource(&game);
 	return (0);
 }
