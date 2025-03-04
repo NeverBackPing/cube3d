@@ -38,8 +38,6 @@ void	alloc_map(t_game *game, t_map *map, int lengh, char *line)
 		ft_strlcpy(map->map[map->lenght_index], line, lengh);
 		map->lenght_index++;
 	}
-	else
-		map->map[map->lenght] = NULL;
 }
 
 void	start_cpy_map(t_game *game, t_map *map, char *line)
@@ -49,14 +47,11 @@ void	start_cpy_map(t_game *game, t_map *map, char *line)
 
 	i = 0;
 	lengh = 0;
-	(void) game;
 	while (line[i])
 	{
-		if (line[i] == ' ')
-			line[i] = 1;
-		i++;
 		if (!escape_sequences(line[i]))
 			lengh++;
+		i++;
 	}
 	alloc_map(game, map, lengh, line);
 }
@@ -77,10 +72,26 @@ bool	just_space(char *line)
 	return (true);
 }
 
-void	get_map(t_game *game)
+bool	skip_set_graph(char *line)
+{
+	int			i;
+	const char	*set_graph[] = {"NO", "SO", "WE", "EA", "F", "C", NULL};
+
+	i = 0;
+	while (set_graph[i])
+	{
+		if (ft_strstr(line, set_graph[i]))
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+void	get_map(t_game *game, char *filename)
 {
 	char	*line;
 
+	open_fd(game, filename);
 	while (1)
 	{
 		line = get_next_line(game->fd);
@@ -88,10 +99,14 @@ void	get_map(t_game *game)
 			break ;
 		if (!escape_sequences(line[0]))
 		{
-			if (!just_space(line))
+			if (!just_space(line) && !skip_set_graph(line))
+			{
 				start_cpy_map(game, &game->map, line);
+			}
 		}
+		if (line)
+			free(line);
 	}
 	close_fd(game);
-	game->map.map = NULL;
+	game->map.map[game->map.lenght] = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:17:21 by sjossain          #+#    #+#             */
-/*   Updated: 2025/03/03 18:57:55 by sjossain         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:01:40 by sjossain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	error_detect(t_game *game)
 	if (game->texture.count_player != 1)
 	{
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, no player find!\n", 2);
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, no player find or bad config file.cub!\n", 2);
 		exit(0);
 	}
 }
@@ -84,6 +84,18 @@ void	get_lenght_map(t_game *game)
 			free(line);
 		line = NULL;
 	}
+	close_fd(game);
 	error_detect(game);
 	game->map.lenght = count;
+}
+
+void	map_init(t_game *game)
+{
+	game->map.map = (char **) malloc((game->map.lenght + 1) * sizeof(char *));
+	if (!game->map.map)
+	{
+		free_ressource(game);
+		ft_putstr_fd("\033[0;31mError\033[0m: Fail malloc\n", 2);
+		exit(0);
+	}
 }

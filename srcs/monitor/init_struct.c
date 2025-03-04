@@ -31,6 +31,8 @@ void	free_ressource(t_game *game)
 		free(game->texture.south_texture);
 	if (game->texture.west_texture)
 		free(game->texture.west_texture);
+	if (game->map.map)
+		dest_free(game->map.map);
 	game->texture.east_texture = NULL;
 	game->texture.north_texture = NULL;
 	game->texture.south_texture = NULL;

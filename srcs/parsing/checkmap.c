@@ -6,7 +6,7 @@
 /*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:23:07 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/03/03 15:06:02 by sjossain         ###   ########.fr       */
+/*   Updated: 2025/03/04 12:19:11 by sjossain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int checkmap(char **tab)
         j++;
     }
     i++;
-    while(tab[i])
+    while(tab[i + 1])
     {
         if(tab[i][0] == '0')
             return(1);
@@ -61,7 +61,24 @@ int checkmap(char **tab)
         }
         i++;
     }
+    j = 0;
+    while(tab[i][j])
+    {
+        if(ft_cins("1 ",tab[i][j]) != 1)
+            return(1);
+        j++;
+    }
     if(cpt != 1)
         return(1);
     return(0);
+}
+
+void    map_is_good(t_game *game)
+{
+    if (checkmap(game->map.map))
+	{
+		ft_putstr_fd("\033[0;31mError\033[0m: Bad config in map detected!\n", 2);
+		free_ressource(game);
+		exit(0);
+	}
 }
