@@ -4,6 +4,7 @@ void	init_struct(t_game *game)
 {
 	game->fd = -1;
 	game->map.lenght = 0;
+	game->map.row = 0;
 	game->texture.line_save = NULL;
 	game->map.map = NULL;
 	game->map.lenght_index = 0;

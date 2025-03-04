@@ -34,6 +34,7 @@ typedef struct s_texture
 
 typedef struct s_map
 {
+	int		row;
 	int		lenght;
 	int		lenght_index;
 	char	**map;
@@ -52,6 +53,8 @@ void	init_struct(t_game *game);
 void	free_ressource(t_game *game);
 // parsing/check_map.c
 void	map_is_good(t_game *game);
+// parsing/edit_map.c
+void	edit_map(t_game *game);
 // parsing/ft_get_map.c
 void	alloc_map(t_game *game, t_map *map, int lengh, char *line);
 bool	escape_sequences(char c);
