@@ -78,4 +78,6 @@ void	set_color(t_game *game, char *set);
 // parsing/map_tool.c
 void	map_init(t_game *game);
 void	get_lenght_map(t_game *game);
+//window/window.c
+int		ft_window(t_game *game);
 #endif

@@ -99,5 +99,4 @@ int     key_hook(int keycode, t_vars *vars);
 
 /* Prototype de la fonction d'intersection rayon-cube (AABB) */
 int     intersect_cube(t_vec origin, t_vec dir, t_vec box_min, t_vec box_max, double *t_out);
-int		ft_window(t_game *game);
 #endif
