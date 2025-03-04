@@ -7,6 +7,7 @@
 # include <mlx.h>
 # include <stdlib.h>
 # include <math.h>
+# include <../includes/main.h>
 
 /* ----------------------------
    Structure pour un vecteur 3D
@@ -95,9 +96,8 @@ void    render_scene(t_vars *vars);
 void    draw_square(t_vars *vars, int start_x, int start_y, int square_size, int color);
 int     close_window(t_vars *vars);
 int     key_hook(int keycode, t_vars *vars);
-int     ft_window(void);
 
 /* Prototype de la fonction d'intersection rayon-cube (AABB) */
 int     intersect_cube(t_vec origin, t_vec dir, t_vec box_min, t_vec box_max, double *t_out);
-
+int		ft_window(t_game *game);
 #endif

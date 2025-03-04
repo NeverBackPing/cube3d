@@ -287,7 +287,7 @@ int close_window(t_vars *vars)
 /* ************************************************************************** */
 
 // Initialise MLX, la fenêtre et la scène, installe les hooks et lance la boucle
-int ft_window(void)
+int ft_window(t_game *game)
 {
     t_vars vars;
 
@@ -298,6 +298,7 @@ int ft_window(void)
     if (!vars.win)
     {
         free(vars.mlx);
+        free_ressource(game);
         return (1);
     }
     init_scene(&vars.scene);
