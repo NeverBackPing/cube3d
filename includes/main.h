@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/05 15:14:37 by sjossain          #+#    #+#             */
+/*   Updated: 2025/03/05 15:14:37 by sjossain         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MAIN_H
 # define MAIN_H
 
@@ -22,7 +34,7 @@ typedef struct s_vec
 	double	x;
 	double	y;
 	double	z;
-} t_vec;
+}	t_vec;
 
 /* Fonctions sur les vecteurs (définitions dans un autre fichier source) */
 t_vec	vec_sub(t_vec a, t_vec b);
@@ -42,7 +54,7 @@ typedef struct s_scene
 	double	vp_height;
 	t_vec	cube_min;
 	t_vec	cube_max;
-} t_scene;
+}	t_scene;
 
 /* ----------------------------
 	Structure pour l'image
@@ -54,7 +66,7 @@ typedef struct s_img
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-} t_img;
+}	t_img;
 
 /* ----------------------------
 	Structure pour (u,v)
@@ -63,7 +75,7 @@ typedef struct s_uv
 {
 	double	u;
 	double	v;
-} t_uv;
+}	t_uv;
 
 typedef struct s_bounds
 {
@@ -74,7 +86,7 @@ typedef struct s_bounds
 	double	tzmin;
 	double	tzmax;
 	double	temp;
-} t_bounds;
+}	t_bounds;
 
 /* -----------------------------------------------------
 	Prototypes des fonctions MLX et hooks
@@ -86,7 +98,7 @@ typedef struct s_vars
 	int		square_x;
 	int		square_y;
 	t_scene	scene;
-} t_vars;
+}	t_vars;
 
 typedef struct s_texture
 {
@@ -102,7 +114,7 @@ typedef struct s_texture
 	int		ground_color;
 	char	*line_save;
 	int		roof_color;
-} t_texture;
+}	t_texture;
 
 typedef struct s_map
 {
@@ -110,7 +122,7 @@ typedef struct s_map
 	int		lenght;
 	int		lenght_index;
 	char	**map;
-} t_map;
+}	t_map;
 
 typedef struct s_game
 {
@@ -119,7 +131,8 @@ typedef struct s_game
 	t_map		map;
 	t_texture	texture;
 	t_vars		vars;
-} t_game;
+}	t_game;
+
 
 // monitor/init_struct.c
 void	init_struct(t_game *game);
