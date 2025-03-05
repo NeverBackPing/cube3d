@@ -13,7 +13,7 @@
 # include <X11/keysym.h>
 # include "../srcs/dependency/libft/libft.h"
 # include "../srcs/dependency/gnl/get_next_line.h"
-# include "../srcs/window/window.h"
+// # include "../srcs/window/window.h"
 
 
 typedef struct s_texture
@@ -36,12 +36,92 @@ typedef struct s_map
 {
 	int		row;
 	int		lenght;
+	int		width;
+	int		height;
 	int		lenght_index;
 	char	**map;
 } t_map;
 
+
+/* ----------------------------
+   Structure pour un vecteur 3D
+   ---------------------------- */
+   typedef struct s_vec
+   {
+	   double  x;
+	   double  y;
+	   double  z;
+   } t_vec;
+   
+   /* Fonctions sur les vecteurs (définitions dans un autre fichier source) */
+   t_vec   vec_sub(t_vec a, t_vec b);
+   t_vec   vec_normalize(t_vec a);
+   
+   
+   // Structure pour le joueur et la caméra
+   typedef struct {
+	   // Position du joueur dans le monde
+	   t_vec pos;
+	   
+	   // Vecteur direction indiquant où regarde le joueurz
+	   t_vec dir;
+	   
+	   // Vecteur du plan de la caméra (doit être perpendiculaire à la direction)
+	   // La longueur de ce vecteur détermine le champ de vision (FOV)
+	   t_vec plane;
+   } t_player;
+   
+   
+   // Structure pour le rayon, utilisé dans la phase DDA
+   typedef struct {
+	   // Vecteur direction du rayon pour une colonne donnée
+	   t_vec rayDir;
+	   
+	   // Position actuelle dans la grille (case en cours)
+	   int mapX;
+	   int mapY;
+	   
+	   // Distance du point de départ à la première intersection avec un bord de cellule
+	   double sideDistX;
+	   double sideDistY;
+	   
+	   // Distance à parcourir pour passer d'un bord de cellule à l'autre sur l'axe X ou Y
+	   double deltaDistX;
+	   double deltaDistY;
+	   
+	   // Distance perpendiculaire du joueur au mur (utilisée pour corriger le fisheye)
+	   double perpWallDist;
+	   
+	   // Indique la direction d'incrémentation dans la grille pour X et Y (valeurs -1 ou +1)
+	   int stepX;
+	   int stepY;
+	   
+	   // Flag indiquant si un mur a été touché (0 = non, 1 = oui)
+	   int hit;
+	   
+	   // Indique quel côté du mur a été touché :
+	   // 0 : côté vertical (mur NS) ; 1 : côté horizontal (mur EW)
+	   int side;
+   } t_ray;
+   
+typedef struct {
+   
+	   void* mlx;
+	   int *win;
+} t_window;
+
 typedef struct s_game
 {
+	int screenWidth;   // largeur de l'écran (en pixels)
+    int screenHeight;  // hauteur de l'écran (en pixels)
+    
+    // Variables de timing pour le calcul du frameTime et de l'FPS
+    double time;
+    double oldTime;
+    double frameTime;
+    
+    // Structures essentielles
+    t_player plr;
 	char		*line_save;
 	int			fd;
 	t_map		map;
@@ -78,4 +158,6 @@ void	set_color(t_game *game, char *set);
 // parsing/map_tool.c
 void	map_init(t_game *game);
 void	get_lenght_map(t_game *game);
+int		ft_window(t_game *game);
+
 #endif
