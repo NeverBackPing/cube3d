@@ -13,8 +13,80 @@
 # include <X11/keysym.h>
 # include "../srcs/dependency/libft/libft.h"
 # include "../srcs/dependency/gnl/get_next_line.h"
-# include "../srcs/window/window.h"
 
+/* ----------------------------
+   Structure pour un vecteur 3D
+   ---------------------------- */
+typedef struct s_vec
+{
+	double	x;
+	double	y;
+	double	z;
+} t_vec;
+
+/* Fonctions sur les vecteurs (définitions dans un autre fichier source) */
+t_vec	vec_sub(t_vec a, t_vec b);
+t_vec	vec_normalize(t_vec a);
+
+/* ----------------------------
+	Structure regroupant les paramètres de la scène
+	---------------------------- */
+typedef struct s_scene
+{
+	int		win_width;
+	int		win_height;
+	t_vec	camera;
+	t_vec	view_center;
+	t_vec	lower_left;
+	double	vp_width;
+	double	vp_height;
+	t_vec	cube_min;
+	t_vec	cube_max;
+} t_scene;
+
+/* ----------------------------
+	Structure pour l'image
+	---------------------------- */
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+} t_img;
+
+/* ----------------------------
+	Structure pour (u,v)
+	---------------------------- */
+typedef struct s_uv
+{
+	double	u;
+	double	v;
+} t_uv;
+
+typedef struct s_bounds
+{
+	double	tmin;
+	double	tmax;
+	double	tymin;
+	double	tymax;
+	double	tzmin;
+	double	tzmax;
+	double	temp;
+} t_bounds;
+
+/* -----------------------------------------------------
+	Prototypes des fonctions MLX et hooks
+	----------------------------------------------------- */
+typedef struct s_vars
+{
+	void	*mlx;
+	void	*win;
+	int		square_x;
+	int		square_y;
+	t_scene	scene;
+} t_vars;
 
 typedef struct s_texture
 {
@@ -46,6 +118,7 @@ typedef struct s_game
 	int			fd;
 	t_map		map;
 	t_texture	texture;
+	t_vars		vars;
 } t_game;
 
 // monitor/init_struct.c
@@ -78,6 +151,18 @@ void	set_color(t_game *game, char *set);
 // parsing/map_tool.c
 void	map_init(t_game *game);
 void	get_lenght_map(t_game *game);
+
 //window/window.c
-int		ft_window(t_game *game);
+/* -----------------------------------------------------
+   Prototypes des fonctions de rendu
+   ----------------------------------------------------- */
+void	init_scene(t_scene *scene);
+int		compute_pixel_color(int x, int y, t_scene *scene);
+void	render_pixels(char *addr, int line_length, int bits_per_pixel, t_scene *scene);
+void	render_scene(t_vars *vars);
+int		close_window(t_vars *vars);
+int		key_hook(int keycode, t_vars *vars);
+/* Prototype de la fonction d'intersection rayon-cube (AABB) */
+int		ft_window(t_game *game, t_vars vars);
+int		intersect_cube(t_vec origin, t_vec dir, t_vec box_min, t_vec box_max, double *t_out);
 #endif

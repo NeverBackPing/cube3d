@@ -57,7 +57,7 @@ OBJS = $(SRCS:.c=.o)
 
 ######################## 🧠 #############################
 
-INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(PARSING_DIR) -I$(GNL_DIR) -I$(MLX_DIR) -Isrcs/window/
+INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(PARSING_DIR) -I$(GNL_DIR) -I$(MLX_DIR)
 
 ######################## 🎨 #############################
 

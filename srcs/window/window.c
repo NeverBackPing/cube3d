@@ -1,4 +1,3 @@
-#include "window.h"
 #include "../../includes/main.h"
 #include <stdlib.h>
 
@@ -287,10 +286,8 @@ int close_window(t_vars *vars)
 /* ************************************************************************** */
 
 // Initialise MLX, la fenêtre et la scène, installe les hooks et lance la boucle
-int ft_window(t_game *game)
+int ft_window(t_game *game, t_vars vars)
 {
-    t_vars vars;
-
     vars.mlx = mlx_init();
     if (!vars.mlx)
         return (1);
