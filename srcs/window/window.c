@@ -130,10 +130,10 @@ void render_scene(t_vars *vars)
             vars->scene.win_height);
     image.addr = mlx_get_data_addr(image.img, &image.bits_per_pixel,
             &image.line_length, &image.endian);
-    render_pixels(image.addr, image.line_length,
+   render_pixels(image.addr, image.line_length,
             image.bits_per_pixel, &vars->scene);
     mlx_put_image_to_window(vars->mlx, vars->win, image.img, 0, 0);
-    mlx_destroy_image(vars->mlx, image.img);
+	mlx_destroy_image(vars->mlx, image.img);
 }
 
 /* ************************************************************************** */
@@ -299,8 +299,9 @@ int ft_window(t_game *game, t_vars vars)
         return (1);
     }
     init_scene(&vars.scene);
-    render_scene(&vars);
-    mlx_hook(vars.win, 17, 0, (int (*)())close_window, &vars);
+ 	render_scene(&vars);
+	//color_rgb_roof(game, &vars);
+   	mlx_hook(vars.win, 17, 0, (int (*)())close_window, &vars);
     mlx_hook(vars.win, 2, 1L<<0, (int (*)())key_hook, &vars);
     mlx_loop(vars.mlx);
     return (0);

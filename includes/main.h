@@ -93,6 +93,7 @@ typedef struct s_bounds
 	----------------------------------------------------- */
 typedef struct s_vars
 {
+	int		mini_map;
 	void	*mlx;
 	void	*win;
 	int		square_x;
@@ -133,7 +134,6 @@ typedef struct s_game
 	t_vars		vars;
 }	t_game;
 
-
 // monitor/init_struct.c
 void	init_struct(t_game *game);
 void	free_ressource(t_game *game);
@@ -164,7 +164,6 @@ void	set_color(t_game *game, char *set);
 // parsing/map_tool.c
 void	map_init(t_game *game);
 void	get_lenght_map(t_game *game);
-
 //window/window.c
 /* -----------------------------------------------------
    Prototypes des fonctions de rendu
@@ -178,4 +177,6 @@ int		key_hook(int keycode, t_vars *vars);
 /* Prototype de la fonction d'intersection rayon-cube (AABB) */
 int		ft_window(t_game *game, t_vars vars);
 int		intersect_cube(t_vec origin, t_vec dir, t_vec box_min, t_vec box_max, double *t_out);
+//window/color_rgb.c
+void	color_rgb_roof(t_game *game, t_vars *vars);
 #endif
