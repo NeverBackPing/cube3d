@@ -16,6 +16,8 @@
 # define NEXTO1 " 1"
 # define PPLR "NEWS"
 # define RADTURN 0.05
+# define SCREENX 800
+# define SCREENY 600
 
 
 

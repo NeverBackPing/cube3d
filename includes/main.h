@@ -82,12 +82,10 @@ typedef struct s_map
 	   int mapY;
 	   
 	   // Distance du point de départ à la première intersection avec un bord de cellule
-	   double sideDistX;
-	   double sideDistY;
+	   t_vec sideDist;
 	   
 	   // Distance à parcourir pour passer d'un bord de cellule à l'autre sur l'axe X ou Y
-	   double deltaDistX;
-	   double deltaDistY;
+	   t_vec deltaDist;
 	   
 	   // Distance perpendiculaire du joueur au mur (utilisée pour corriger le fisheye)
 	   double perpWallDist;
