@@ -1,11 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   window.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 20:30:00 by gtraiman          #+#    #+#             */
+/*   Updated: 2025/03/06 21:14:52 by gtraiman         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "window.h"
 #include "../../includes/main.h"
 #include <stdlib.h>
 
-/* ************************************************************************** */
-/*                            Fonctions vecteur                               */
-/* ************************************************************************** */
-
-// Renvoie a - b
 t_vec vec_sub(t_vec a, t_vec b)
 {
     t_vec res;
@@ -15,7 +23,6 @@ t_vec vec_sub(t_vec a, t_vec b)
     return (res);
 }
 
-// Renvoie le vecteur normalisé de a
 t_vec vec_normalize(t_vec a)
 {
     double len;
@@ -37,272 +44,291 @@ t_vec vec_normalize(t_vec a)
     return (res);
 }
 
-/* ************************************************************************** */
-/*                        Initialisation de la scène                          */
-/* ************************************************************************** */
-
-// Initialise les paramètres de la scène dans 'scene'
-void init_scene(t_scene *scene)
+int	ft_tablen(char **tab)
 {
-    scene->win_width = 800;
-    scene->win_height = 600;
-    scene->camera.x = 2.5;
-    scene->camera.y = 2.5;
-    scene->camera.z = -5.0;
-    scene->view_center.x = scene->camera.x;
-    scene->view_center.y = scene->camera.y;
-    scene->view_center.z = scene->camera.z + 1.0;
-    scene->vp_height = 2.0;
-    scene->vp_width = 2.6666;
-    scene->lower_left.x = scene->view_center.x - (scene->vp_width / 2.0);
-    scene->lower_left.y = scene->view_center.y - (scene->vp_height / 2.0);
-    scene->lower_left.z = scene->view_center.z;
-    scene->cube_min.x = 2.0;
-    scene->cube_min.y = 2.0;
-    scene->cube_min.z = 0.0;
-    scene->cube_max.x = 3.0;
-    scene->cube_max.y = 3.0;
-    scene->cube_max.z = 1.0;
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
 }
 
-/* ************************************************************************** */
-/*                      Calcul de la couleur d'un pixel                       */
-/* ************************************************************************** */
-
-// Calcule la couleur du pixel (x,y) en effectuant du raytracing sur le cube
-int compute_pixel_color(int x, int y, t_scene *scene)
+int key_hook(int keycode, void *param)
 {
-    t_uv uv;
-    t_vec ray_dir;
-    double t;
-    int color;
+    t_env *env = (t_env *)param;
 
-    uv.u = (double)x / (scene->win_width - 1);
-    uv.v = (double)y / (scene->win_height - 1);
-    ray_dir = vec_normalize(vec_sub((t_vec){
-            scene->lower_left.x + uv.u * scene->vp_width,
-            scene->lower_left.y + uv.v * scene->vp_height,
-            scene->lower_left.z}, scene->camera));
-    if (intersect_cube(scene->camera, ray_dir, scene->cube_min, scene->cube_max, &t))
-        color = 0xFFFFFF;
-    else
-        color = 0x000000;
-    return (color);
-}
-
-/* ************************************************************************** */
-/*                     Rendu des pixels dans l'image                        */
-/* ************************************************************************** */
-
-// Parcourt chaque pixel et y affecte une couleur calculée
-void render_pixels(char *addr, int line_length, int bits_per_pixel, t_scene *scene)
-{
-    int x;
-    int y;
-    int index;
-    int color;
-
-    y = 0;
-    while (y < scene->win_height)
+    if (keycode == 65307 || keycode == 17) // Escape
+        close_window(env);
+    if (keycode == 65361) // flèche gauche
+        env->game.plr.dir = turnv(env->game.plr.dir, -RADTURN);
+    else if (keycode == 65363) // flèche droite
+        env->game.plr.dir = turnv(env->game.plr.dir, RADTURN);
+    else if (keycode == 119) // 'w' key (ASCII 119) : avancer
     {
-        x = 0;
-        while (x < scene->win_width)
-        {
-            color = compute_pixel_color(x, y, scene);
-            index = y * line_length + x * (bits_per_pixel / 8);
-            *(unsigned int *)(addr + index) = color;
-            x = x + 1;
-        }
-        y = y + 1;
+        env->game.plr.pos.x += env->game.plr.dir.x * SPEED;
+        env->game.plr.pos.y += env->game.plr.dir.y * SPEED;
     }
-}
-
-/* ************************************************************************** */
-/*                         Rendu de la scène (raytracing)                     */
-/* ************************************************************************** */
-
-// Crée une image, rend la scène dedans et l'affiche dans la fenêtre
-void render_scene(t_vars *vars)
-{
-    t_img image;
-
-    image.img = mlx_new_image(vars->mlx, vars->scene.win_width,
-            vars->scene.win_height);
-    image.addr = mlx_get_data_addr(image.img, &image.bits_per_pixel,
-            &image.line_length, &image.endian);
-   render_pixels(image.addr, image.line_length,
-            image.bits_per_pixel, &vars->scene);
-    mlx_put_image_to_window(vars->mlx, vars->win, image.img, 0, 0);
-	mlx_destroy_image(vars->mlx, image.img);
-}
-
-/* ************************************************************************** */
-/*                         Mise à jour de la caméra                           */
-/* ************************************************************************** */
-
-/*
- * update_camera
- *
- * Met à jour la position de la caméra dans la structure scene selon
- * la touche pressée. On déplace la caméra sur l'axe X (gauche/droite)
- * et sur l'axe Z (se rapprocher/s'éloigner). L'axe Y reste constant.
- *
- * Paramètres :
- *   - scene : structure regroupant les paramètres de la scène.
- *   - keycode : code de la touche pressée.
- */
-void update_camera(t_scene *scene, int keycode)
-{
-    double delta;
-
-    delta = 0.2;
-    if (keycode == 65361)
-        scene->camera.x = scene->camera.x - delta;
-    else if (keycode == 65363)
-        scene->camera.x = scene->camera.x + delta;
-    else if (keycode == 65362)
-        scene->camera.z = scene->camera.z + delta;
-    else if (keycode == 65364)
-        scene->camera.z = scene->camera.z - delta;
-    scene->view_center.x = scene->camera.x;
-    scene->view_center.y = scene->camera.y;  /* Reste constant */
-    scene->view_center.z = scene->camera.z + 1.0;
-    scene->lower_left.x = scene->view_center.x - (scene->vp_width / 2.0);
-    scene->lower_left.y = scene->view_center.y - (scene->vp_height / 2.0);
-    scene->lower_left.z = scene->view_center.z;
-}
-
-
-/* ************************************************************************** */
-/*                            Gestion du clavier                              */
-/* ************************************************************************** */
-
-// Met à jour la position de la caméra selon la touche pressée
-int key_hook(int keycode, t_vars *vars)
-{
-    if (keycode == 65307)
+    else if (keycode == 115) // 's' key (ASCII 115) : reculer
     {
-        mlx_destroy_window(vars->mlx, vars->win);
-        exit(0);
+        env->game.plr.pos.x -= env->game.plr.dir.x * SPEED;
+        env->game.plr.pos.y -= env->game.plr.dir.y * SPEED;
     }
-    update_camera(&vars->scene, keycode);
-    render_scene(vars);
+    else if (keycode == 97)  // 'a' key (ASCII 97) : strafe gauche
+    {
+        env->game.plr.pos.x += env->game.plr.dir.y * SPEED;
+        env->game.plr.pos.y += -env->game.plr.dir.x * SPEED;
+    }
+    else if (keycode == 100) // 'd' key (ASCII 100) : strafe droite
+    {
+        env->game.plr.pos.x += -env->game.plr.dir.y * SPEED;
+        env->game.plr.pos.y += env->game.plr.dir.x * SPEED;
+    }
+    ft_setplan(&env->game.plr, FOV);
+    ft_draw(&env->game, &env->win);
     return (0);
 }
 
-int intersect_cube(t_vec origin, t_vec dir, t_vec box_min, t_vec box_max, double *t_out)
+int close_window(t_env *env)
 {
-    t_bounds b;
-
-    if (dir.x == 0)
-    {
-        if (origin.x < box_min.x || origin.x > box_max.x)
-            return (0);
-        b.tmin = -INFINITY;
-        b.tmax = INFINITY;
-    }
-    else
-    {
-        b.tmin = (box_min.x - origin.x) / dir.x;
-        b.tmax = (box_max.x - origin.x) / dir.x;
-        if (b.tmin > b.tmax)
-        {
-            b.temp = b.tmin;
-            b.tmin = b.tmax;
-            b.tmax = b.temp;
-        }
-    }
-    if (dir.y == 0)
-    {
-        if (origin.y < box_min.y || origin.y > box_max.y)
-            return (0);
-        b.tymin = -INFINITY;
-        b.tymax = INFINITY;
-    }
-    else
-    {
-        b.tymin = (box_min.y - origin.y) / dir.y;
-        b.tymax = (box_max.y - origin.y) / dir.y;
-        if (b.tymin > b.tymax)
-        {
-            b.temp = b.tymin;
-            b.tymin = b.tymax;
-            b.tymax = b.temp;
-        }
-    }
-    if (b.tmin > b.tymax || b.tymin > b.tmax)
-        return (0);
-    if (b.tymin > b.tmin)
-        b.tmin = b.tymin;
-    if (b.tymax < b.tmax)
-        b.tmax = b.tymax;
-    if (dir.z == 0)
-    {
-        if (origin.z < box_min.z || origin.z > box_max.z)
-            return (0);
-        b.tzmin = -INFINITY;
-        b.tzmax = INFINITY;
-    }
-    else
-    {
-        b.tzmin = (box_min.z - origin.z) / dir.z;
-        b.tzmax = (box_max.z - origin.z) / dir.z;
-        if (b.tzmin > b.tzmax)
-        {
-            b.temp = b.tzmin;
-            b.tzmin = b.tzmax;
-            b.tzmax = b.temp;
-        }
-    }
-    if (b.tmin > b.tzmax || b.tzmin > b.tmax)
-        return (0);
-    if (b.tzmin > b.tmin)
-        b.tmin = b.tzmin;
-    if (b.tzmax < b.tmax)
-        b.tmax = b.tzmax;
-    if (b.tmin < 0)
-    {
-        if (b.tmax < 0)
-            return (0);
-        else
-            *t_out = b.tmax;
-    }
-    else
-        *t_out = b.tmin;
-    return (1);
-}
-
-
-int close_window(t_vars *vars)
-{
-    mlx_destroy_window(vars->mlx, vars->win);
+    free_ressource(&env->game);
+    mlx_destroy_window(env->win.mlx, env->win.win);
+    mlx_destroy_display(env->win.mlx);
+    free(env->win.mlx);
     exit(0);
     return (0);
 }
 
 
-/* ************************************************************************** */
-/*                   Initialisation de la fenêtre MLX                         */
-/* ************************************************************************** */
-
-// Initialise MLX, la fenêtre et la scène, installe les hooks et lance la boucle
-int ft_window(t_game *game, t_vars vars)
+void ft_findp(char **map, t_vec *pos)
 {
-    vars.mlx = mlx_init();
-    if (!vars.mlx)
-        return (1);
-    vars.win = mlx_new_window(vars.mlx, 800, 600, "Cub3d Raytracing");
-    if (!vars.win)
+    int i;
+    int j;
+
+    i = 0;
+    while (map[i])
     {
-        free(vars.mlx);
+        j = 0;
+        while (map[i][j])
+        {
+            if (ft_cins("NESW", map[i][j]) == 1)
+            {
+                pos->x = i + 0.5;
+                pos->y = j + 0.5;
+                if(map[i][j] == 'E')
+                    pos->x--;
+                return ;
+            }
+            j++;
+        }
+        i++;
+    }
+}
+
+void ft_initp(t_game *game, t_player *plr)
+{
+    ft_findp(game->map.map,&plr->pos);
+    plr->dir.y = 0;
+    plr->dir.x = 0;
+    if(game->map.map[(int)plr->pos.x][(int)plr->pos.y] == 'N')
+        plr->dir.y = 1;
+    else if(game->map.map[(int)plr->pos.x][(int)plr->pos.y] == 'S')
+        plr->dir.y = -1;
+    else if(game->map.map[(int)plr->pos.x][(int)plr->pos.y] == 'W')
+        plr->dir.x = -1;
+    else
+        plr->dir.x = 1;
+    ft_setplan(plr,FOV);
+}
+
+void ft_setposmap(t_ray *r)
+{
+    r->mapX = (int)r->rayDir.x;
+    r->mapY = (int)r->rayDir.y;
+}
+
+void ft_setSideDist(t_ray *r, double posX, double posY)
+{
+    if (r->rayDir.x < 0)
+    {
+        r->stepX = -1;
+        r->sideDist.x = (posX - r->mapX) * r->deltaDist.x;
+    }
+    else
+    {
+        r->stepX = 1;
+        r->sideDist.x = (r->mapX + 1.0 - posX) * r->deltaDist.x;
+    }
+    if (r->rayDir.y < 0)
+    {
+        r->stepY = -1;
+        r->sideDist.y = (posY - r->mapY) * r->deltaDist.y;
+    }
+    else
+    {
+        r->stepY = 1;
+        r->sideDist.y = (r->mapY + 1.0 - posY) * r->deltaDist.y;
+    }
+}
+
+void ft_testhit(t_ray *r, t_game *game)
+{
+    int hit = 0;
+    while (hit == 0)
+    {
+        // Avancer d'une cellule dans la direction qui nécessite la plus petite distance
+        if (r->sideDist.x < r->sideDist.y)
+        {
+            r->sideDist.x += r->deltaDist.x;  // On "saute" à la prochaine frontière verticale
+            r->mapX += r->stepX;            // On avance d'une case sur l'axe X
+            r->side = 0;                 // Indique que le saut a été effectué en X (mur vertical)
+        }
+        else
+        {
+            r->sideDist.y += r->deltaDist.y;  // On "saute" à la prochaine frontière horizontale
+            r->mapY += r->stepY;            // On avance d'une case sur l'axe Y
+            r->side = 1;                 // Indique que le saut a été effectué en Y (mur horizontal)
+        }
+        if (r->mapY < 0 || r->mapY >= ft_tablen(game->map.map) ||
+            r->mapX < 0 || r->mapX >= (int)ft_strlen(game->map.map[r->mapY]))
+                hit = 1;
+        if (game->map.map[r->mapY][r->mapX] == '1')
+            hit = 1;
+    }
+    if (r->side == 0)
+        r->perpWallDist = r->sideDist.x - r->deltaDist.x;
+    else
+        r->perpWallDist = r->sideDist.y - r->deltaDist.y;
+}
+
+
+t_vec    ft_onecol(int x, t_player plr)
+{
+    double camX;
+    t_vec rayDir;
+
+    camX = 2*x /(double)SCREENX -1;
+    rayDir.x =  plr.dir.x + plr.plane.x * camX;
+    rayDir.y =  plr.dir.y + plr.plane.y * camX;
+    rayDir.z = 0;
+    return(rayDir);
+}
+
+void ft_allcol(t_game *game, int *size_line, int *bpp, char *data)
+{
+    int x = 0;
+    t_ray r;
+    int lineHeight;
+
+    while(x < SCREENX)
+    {
+        r.rayDir = ft_onecol(x, game->plr);
+        r.mapX = (int)game->plr.pos.x;
+        r.mapY = (int)game->plr.pos.y;
+        ft_setdelta(&r);
+        ft_setSideDist(&r, game->plr.pos.x, game->plr.pos.y);
+        ft_testhit(&r, game);
+        lineHeight = (int)(SCREENY / r.perpWallDist);
+        ft_lim(&r, lineHeight, size_line, bpp, data, x);
+        x++;
+    }
+}
+
+void ft_draw(t_game *game, t_window *win)
+{   
+    int bpp;
+    int size_line;
+    int endian;
+    char *data;
+
+    win->img = mlx_new_image(win->mlx, SCREENX, SCREENY);
+    data = mlx_get_data_addr(win->img, &bpp, &size_line, &endian);
+    ft_allcol(game, &size_line, &bpp, data);
+    mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);
+    mlx_destroy_image(win->mlx, win->img);
+}
+
+void ft_lim(t_ray *r, int lh, int *size_line, int *bpp, char *data, int x)
+{
+    int Dstart;
+    int Dend;
+    int y;
+    int offset;
+
+    Dstart = -lh / 2 + SCREENY / 2;
+    Dend = lh / 2 + SCREENY / 2;
+    r->color = COLOR;
+    if(Dstart < 0)
+        Dstart = 0;
+    if(Dend >= SCREENY)
+        Dend = SCREENY - 1;
+    if (r->side == 1)
+        r->color = (r->color >> 1) & 8355711;
+    y = Dstart;
+    while(y < Dend)
+    {
+        offset = y * *size_line + x * (*bpp / 8);
+        *(unsigned int *)(data + offset) = r->color;
+        y++;
+    }
+}
+
+void ft_setdelta(t_ray *r)
+{
+    if (r->rayDir.x == 0)
+        r->deltaDist.x = 1e30;  // Valeur très élevée pour éviter la division par zéro
+    else
+        r->deltaDist.x = fabs(1 / r->rayDir.x);
+
+    if (r->rayDir.y == 0)
+        r->deltaDist.y = 1e30;
+    else
+        r->deltaDist.y = fabs(1 / r->rayDir.y);
+}
+
+
+void ft_setplan(t_player *plr, double planeLength)
+{
+    plr->plane.x = -plr->dir.y * planeLength;
+    plr->plane.y =  plr->dir.x * planeLength;
+    plr->plane.z = 0;
+}
+
+t_vec turnv(t_vec v, double rad)
+{
+    t_vec rotated;
+    rotated.x = v.x * cos(rad) - v.y * sin(rad);
+    rotated.y = v.x * sin(rad) + v.y * cos(rad);
+    rotated.z = v.z;
+    return rotated;
+}
+
+int ft_window(t_game *game)
+{
+    t_env env;
+    
+    // Initialisation de MLX et de la fenêtre
+    env.win.mlx = mlx_init();
+    if (!env.win.mlx)
+        return (1);
+    
+    // Copie du jeu et initialisation du joueur
+    env.game = *game;
+    ft_initp(&env.game, &env.game.plr);
+    
+    env.win.win = mlx_new_window(env.win.mlx, SCREENX, SCREENY, "Cub3d Raytracing");
+    if (!env.win.win)
+    {
+        free(env.win.mlx);
         free_ressource(game);
         return (1);
     }
-    init_scene(&vars.scene);
- 	render_scene(&vars);
-	//color_rgb_roof(game, &vars);
-   	mlx_hook(vars.win, 17, 0, (int (*)())close_window, &vars);
-    mlx_hook(vars.win, 2, 1L<<0, (int (*)())key_hook, &vars);
-    mlx_loop(vars.mlx);
+    ft_draw(&env.game, &env.win);
+    // Associer notre structure à MLX
+    mlx_hook(env.win.win, 17, 0, (int (*)())close_window, &env);
+    mlx_hook(env.win.win, 2, 1L<<0, key_hook, &env); // Passer &env ici
+    
+    mlx_loop(env.win.mlx);
     return (0);
 }
+
