@@ -18,10 +18,11 @@
 # define RADTURN 0.05
 # define SCREENX 800
 # define SCREENY 600
-# define SPEED 5
+# define SPEED 0.1
 # define COLOR 0xFF0000
 
 int	ft_tablen(char **tab);
+int close_window(t_window *vars);
 void ft_lim(t_ray *r, int lh, int *size_line, int *bpp, char *data, int x);
 void ft_setdelta(t_ray *r);
 void ft_draw(t_game *game, t_window *win);
