@@ -1,203 +1,304 @@
-#include "window.h"
-#include "../../includes/main.h"
-#include <stdlib.h>
+    #include "window.h"
+    #include "../../includes/main.h"
+    #include <stdlib.h>
 
-t_vec vec_sub(t_vec a, t_vec b)
+    t_vec vec_sub(t_vec a, t_vec b)
+    {
+        t_vec res;
+        res.x = a.x - b.x;
+        res.y = a.y - b.y;
+        res.z = a.z - b.z;
+        return (res);
+    }
+
+    t_vec vec_normalize(t_vec a)
+    {
+        double len;
+        t_vec res;
+
+        len = sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+        if (len == 0)
+        {
+            res.x = 0;
+            res.y = 0;
+            res.z = 0;
+        }
+        else
+        {
+            res.x = a.x / len;
+            res.y = a.y / len;
+            res.z = a.z / len;
+        }
+        return (res);
+    }
+
+int	ft_tablen(char **tab)
 {
-    t_vec res;
-    res.x = a.x - b.x;
-    res.y = a.y - b.y;
-    res.z = a.z - b.z;
-    return (res);
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
 }
 
-t_vec vec_normalize(t_vec a)
-{
-    double len;
-    t_vec res;
-
-    len = sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
-    if (len == 0)
+    int key_hook(int keycode, void *param)
     {
-        res.x = 0;
-        res.y = 0;
-        res.z = 0;
+        t_env *env = (t_env *)param;
+        
+        if (keycode == 65307) // Escape
+        {
+            mlx_destroy_window(env->win.mlx, env->win.win);
+            exit(0);
+        }
+        if (keycode == 65361) // flèche gauche
+            env->game.plr.dir = turnv(env->game.plr.dir, RADTURN);
+        else if (keycode == 65363) // flèche droite
+            env->game.plr.dir = turnv(env->game.plr.dir, -RADTURN);
+        ft_setplan(&env->game.plr, FOV);
+        // Redessiner après modification
+        ft_draw(&env->game, &env->win);
+        return (0);
     }
-    else
-    {
-        res.x = a.x / len;
-        res.y = a.y / len;
-        res.z = a.z / len;
-    }
-    return (res);
-}
 
 
-int key_hook(int keycode, t_window *vars, t_player *plr)
-{
-    if (keycode == 65307)
+
+    int close_window(t_window *vars)
     {
         mlx_destroy_window(vars->mlx, vars->win);
         exit(0);
+        return (0);
     }
-    if (keycode == 65361) //G
-        plr->dir = turnv(plr->dir,RADTURN);
-    else if (keycode == 65363) //D
-        plr->dir = turnv(plr->dir,-RADTURN);
-    // else if (keycode == 65362) //DV
-    // else if (keycode == 65364) //DR
-    return (0);
-}
 
-
-int close_window(t_window *vars)
-{
-    mlx_destroy_window(vars->mlx, vars->win);
-    exit(0);
-    return (0);
-}
-
-int *ft_findp(char **map)
-{
-    int i;
-    int j;
-    int *tab;
-
-    i = 0;
-    tab = malloc(2 * sizeof(int));
-    if (!tab)
-        return (NULL);
-    while (map[i])
+    void ft_findp(char **map, t_vec *pos)
     {
-        j = 0;
-        while (map[i][j])
+        int i;
+        int j;
+
+        i = 0;
+        while (map[i])
         {
-            if (ft_cins("NESW", map[i][j]) == 1)
+            j = 0;
+            while (map[i][j])
             {
-                tab[0] = i;
-                tab[1] = j;
-                return (tab);
+                if (ft_cins("NESW", map[i][j]) == 1)
+                {
+                    pos->x = i;
+                    pos->y = j;
+                    return ;
+                }
+                j++;
             }
-            j++;
+            i++;
         }
-        i++;
     }
-    free(tab);
-    return (NULL);
-}
 
-void ft_initp(t_game *game, t_player *plr)
+    void ft_initp(t_game *game, t_player *plr)
+    {
+        ft_findp(game->map.map,&plr->pos);
+        plr->dir.y = 0;
+        plr->dir.x = 0;
+        if(game->map.map[(int)plr->pos.x][(int)plr->pos.y] == 'N')
+            plr->dir.y = 1;
+        if(game->map.map[(int)plr->pos.x][(int)plr->pos.y] == 'S')
+            plr->dir.y = -1;
+        if(game->map.map[(int)plr->pos.x][(int)plr->pos.y] == 'W')
+            plr->dir.x = -1;
+        else
+            plr->dir.x = 1;
+        ft_setplan(plr,FOV);
+    }
+    void ft_setposmap(t_ray *r)
+    {
+        r->mapX = (int)r->rayDir.x;
+        r->mapY = (int)r->rayDir.y;
+    }
+    void ft_setSideDist(t_ray *r, double posX, double posY)
+    {
+        if (r->rayDir.x < 0)
+        {
+            r->stepX = -1;
+            r->sideDist.x = (posX - r->mapX) * r->deltaDist.x;
+        }
+        else
+        {
+            r->stepX = 1;
+            r->sideDist.x = (r->mapX + 1.0 - posX) * r->deltaDist.x;
+        }
+        if (r->rayDir.y < 0)
+        {
+            r->stepY = -1;
+            r->sideDist.y = (posY - r->mapY) * r->deltaDist.y;
+        }
+        else
+        {
+            r->stepY = 1;
+            r->sideDist.y = (r->mapY + 1.0 - posY) * r->deltaDist.y;
+        }
+    }
+
+void ft_testhit(t_ray *r, t_game *game)
 {
-    plr->pos.x = ft_findp(game->map.map)[0];
-    plr->pos.y = ft_findp(game->map.map)[1];
-    plr->dir.y = 0;
-    plr->dir.x = 0;
-    if(game->map.map[(int)plr->pos.x][(int)plr->pos.y] == 'N')
-        plr->dir.y = 1;
-    if(game->map.map[(int)plr->pos.x][(int)plr->pos.y] == 'S')
-        plr->dir.y = -1;
-    if(game->map.map[(int)plr->pos.x][(int)plr->pos.y] == 'W')
-        plr->dir.x = -1;
+    int hit = 0;
+    while (hit == 0)
+    {
+        // Avancer d'une cellule dans la direction qui nécessite la plus petite distance
+        if (r->sideDist.x < r->sideDist.y)
+        {
+            r->sideDist.x += r->deltaDist.x;  // On "saute" à la prochaine frontière verticale
+            r->mapX += r->stepX;            // On avance d'une case sur l'axe X
+            r->side = 0;                 // Indique que le saut a été effectué en X (mur vertical)
+        }
+        else
+        {
+            r->sideDist.y += r->deltaDist.y;  // On "saute" à la prochaine frontière horizontale
+            r->mapY += r->stepY;            // On avance d'une case sur l'axe Y
+            r->side = 1;                 // Indique que le saut a été effectué en Y (mur horizontal)
+        }
+        if (r->mapY < 0 || r->mapY >= ft_tablen(game->map.map) ||
+            r->mapX < 0 || r->mapX >= (int)ft_strlen(game->map.map[r->mapY]))
+        {
+            hit = 1;
+            break;
+        }
+        if (game->map.map[r->mapY][r->mapX] == '1')
+            hit = 1;
+    }
+    if (r->side == 0)
+        r->perpWallDist = r->sideDist.x - r->deltaDist.x;
     else
-        plr->dir.x = 1;
-    ft_setplan(plr,FOV);
+        r->perpWallDist = r->sideDist.y - r->deltaDist.y;
 }
-void ft_setposmap(t_ray *r)
-{
-    r->mapX = (int)r->rayDir.x;
-    r->mapY = (int)r->rayDir.y;
-}
-void ft_setSideDist(t_ray *r, double posX, double posY)
-{
-    if (r->rayDir.x < 0)
+
+
+    t_vec    ft_onecol(int x, t_player plr)
     {
-        r->stepX = -1;
-        r->sideDist.x = (posX - r->mapX) * r->deltaDist.x;
+        double camX;
+        t_vec rayDir;
+
+        camX = 2*x /(double)SCREENX -1;
+        rayDir.x =  plr.dir.x + plr.plane.x * camX;
+        rayDir.y =  plr.dir.y + plr.plane.y * camX;
+        rayDir.z = 0;
+        return(rayDir);
     }
-    else
+
+    void ft_allcol(t_game *game, int *size_line, int *bpp, char *data)
     {
-        r->stepX = 1;
-        r->sideDist.x = (r->mapX + 1.0 - posX) * r->deltaDist.x;
+        int x = 0;
+        t_ray r;
+        int lineHeight;
+
+        while(x < SCREENX)
+        {
+            r.rayDir = ft_onecol(x, game->plr);
+            r.mapX = (int)game->plr.pos.x;
+            r.mapY = (int)game->plr.pos.y;
+            ft_setdelta(&r);
+            ft_setSideDist(&r, game->plr.pos.x, game->plr.pos.y);
+            ft_testhit(&r, game);
+            lineHeight = (int)(SCREENY / r.perpWallDist);
+            ft_lim(&r, lineHeight, size_line, bpp, data, x);
+            x++;
+        }
     }
-    if (r->rayDir.y < 0)
+
+    void ft_draw(t_game *game, t_window *win)
+    {   
+        int bpp;
+        int size_line;
+        int endian;
+        char *data;
+
+        win->img = mlx_new_image(win->mlx, SCREENX, SCREENY);
+        data = mlx_get_data_addr(win->img, &bpp, &size_line, &endian);
+        ft_allcol(game, &size_line, &bpp, data);
+        mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);
+        mlx_destroy_image(win->mlx, win->img);
+    }
+
+    void ft_lim(t_ray *r, int lh, int *size_line, int *bpp, char *data, int x)
     {
-        r->stepY = -1;
-        r->sideDist.y = (posY - r->mapY) * r->deltaDist.y;
+        int Dstart;
+        int Dend;
+        int y;
+        int offset;
+
+
+        Dstart = -lh / 2 + SCREENY / 2;
+        Dend = lh / 2 + SCREENY / 2;
+        if(Dstart < 0)
+            Dstart = 0;
+        if(Dend >= SCREENY)
+            Dend = SCREENY - 1;
+        if (r->side == 1)
+            r->color = (COLOR >> 1) & 8355711;
+        y = Dstart;
+        while(y < Dend)
+        {
+            offset = y * *size_line + x * (*bpp / 8);
+            *(unsigned int *)(data + offset) = r->color;
+            y++;
+        }
+        
     }
-    else
+
+    void ft_setdelta(t_ray *r)
     {
-        r->stepY = 1;
-        r->sideDist.y = (r->mapY + 1.0 - posY) * r->deltaDist.y;
+        if (r->rayDir.x == 0)
+            r->deltaDist.x = 1e30;  // Valeur très élevée pour éviter la division par zéro
+        else
+            r->deltaDist.x = fabs(1 / r->rayDir.x);
+
+        if (r->rayDir.y == 0)
+            r->deltaDist.y = 1e30;
+        else
+            r->deltaDist.y = fabs(1 / r->rayDir.y);
     }
-}
 
-void    ft_onecol(int x)
-{
-    double camX;
 
-    camX = 2*x /(double)SCREENX -1;
-    
-    
-}
-
-void ft_allcol(t_game *game)
-{
-    int x = 0;
-
-    while(x < SCREENX)
+    void ft_setplan(t_player *plr, double planeLength)
     {
-        ft_onecol(int x);
+        plr->plane.x = -plr->dir.y * planeLength;
+        plr->plane.y =  plr->dir.x * planeLength;
+        plr->plane.z = 0;
     }
-}
 
-
-void ft_setdelta(t_ray *r)
-{
-    if (r->rayDir.x == 0)
-        r->deltaDist.x = 1e30;  // Valeur très élevée pour éviter la division par zéro
-    else
-        r->deltaDist.x = fabs(1 / r->rayDir.x);
-
-    if (r->rayDir.y == 0)
-        r->deltaDist.y = 1e30;
-    else
-        r->deltaDist.y = fabs(1 / r->rayDir.y);
-}
-
-
-void ft_setplan(t_player *plr, double planeLength)
-{
-    plr->plane.x = -plr->dir.y * planeLength;
-    plr->plane.y =  plr->dir.x * planeLength;
-    plr->plane.z = 0;
-}
-
-t_vec turnv(t_vec v, double rad)
-{
-    t_vec rotated;
-    rotated.x = v.x * cos(rad) - v.y * sin(rad);
-    rotated.y = v.x * sin(rad) + v.y * cos(rad);
-    rotated.z = v.z;
-    return rotated;
-}
-
-int ft_window(t_game *game)
-{
-    t_window vars;
-
-    vars.mlx = mlx_init();
-    if (!vars.mlx)
-        return (1);
-    ft_initp(game,&game->plr);
-    vars.win = mlx_new_window(vars.mlx, SCREENX, SCREENY, "Cub3d Raytracing");
-    if (!vars.win)
+    t_vec turnv(t_vec v, double rad)
     {
-        free(vars.mlx);
-        free_ressource(game);
-        return (1);
+        t_vec rotated;
+        rotated.x = v.x * cos(rad) - v.y * sin(rad);
+        rotated.y = v.x * sin(rad) + v.y * cos(rad);
+        rotated.z = v.z;
+        return rotated;
     }
-    mlx_hook(vars.win, 17, 0, (int (*)())close_window, &vars);
-    mlx_hook(vars.win, 2, 1L<<0, (int (*)())key_hook, &vars);
-    mlx_loop(vars.mlx);
-    return (0);
-}
+
+    int ft_window(t_game *game)
+    {
+        t_env env;
+        
+        // Initialisation de MLX et de la fenêtre
+        env.win.mlx = mlx_init();
+        if (!env.win.mlx)
+            return (1);
+        
+        // Copie du jeu et initialisation du joueur
+        env.game = *game;
+        ft_initp(&env.game, &env.game.plr);
+        
+        env.win.win = mlx_new_window(env.win.mlx, SCREENX, SCREENY, "Cub3d Raytracing");
+        if (!env.win.win)
+        {
+            free(env.win.mlx);
+            free_ressource(game);
+            return (1);
+        }
+        ft_draw(&env.game, &env.win);
+        // Associer notre structure à MLX
+        mlx_hook(env.win.win, 17, 0, (int (*)())close_window, &env.win);
+        mlx_hook(env.win.win, 2, 1L<<0, key_hook, &env); // Passer &env ici
+        
+        mlx_loop(env.win.mlx);
+        return (0);
+    }
+

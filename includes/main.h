@@ -97,21 +97,24 @@ typedef struct s_map
 	   // Flag indiquant si un mur a été touché (0 = non, 1 = oui)
 	   int hit;
 	   
+	   int color;
 	   // Indique quel côté du mur a été touché :
 	   // 0 : côté vertical (mur NS) ; 1 : côté horizontal (mur EW)
 	   int side;
    } t_ray;
    
 typedef struct {
-   
-	   void* mlx;
-	   int *win;
+
+	void 	*img;
+	void	*mlx;
+	int		*win;
 } t_window;
+
+
 
 typedef struct s_game
 {
-	int screenWidth;   // largeur de l'écran (en pixels)
-    int screenHeight;  // hauteur de l'écran (en pixels)
+
     
     // Variables de timing pour le calcul du frameTime et de l'FPS
     double time;
@@ -125,6 +128,12 @@ typedef struct s_game
 	t_map		map;
 	t_texture	texture;
 } t_game;
+
+typedef struct s_env {
+    t_window    win;
+    t_game      game;
+    t_player    *plr;  // ou game.plr si tu préfères y accéder directement
+} t_env;
 
 // monitor/init_struct.c
 void	init_struct(t_game *game);
