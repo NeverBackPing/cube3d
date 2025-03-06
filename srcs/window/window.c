@@ -6,7 +6,7 @@
 /*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 20:30:00 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/03/06 21:14:52 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/06 22:10:32 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,6 @@
 #include "../../includes/main.h"
 #include <stdlib.h>
 
-t_vec vec_sub(t_vec a, t_vec b)
-{
-    t_vec res;
-    res.x = a.x - b.x;
-    res.y = a.y - b.y;
-    res.z = a.z - b.z;
-    return (res);
-}
-
-t_vec vec_normalize(t_vec a)
-{
-    double len;
-    t_vec res;
-
-    len = sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
-    if (len == 0)
-    {
-        res.x = 0;
-        res.y = 0;
-        res.z = 0;
-    }
-    else
-    {
-        res.x = a.x / len;
-        res.y = a.y / len;
-        res.z = a.z / len;
-    }
-    return (res);
-}
 
 int	ft_tablen(char **tab)
 {
@@ -58,35 +29,46 @@ int key_hook(int keycode, void *param)
 {
     t_env *env = (t_env *)param;
 
-    if (keycode == 65307 || keycode == 17) // Escape
+    if (keycode == 65307) // Escape
         close_window(env);
     if (keycode == 65361) // flèche gauche
         env->game.plr.dir = turnv(env->game.plr.dir, -RADTURN);
     else if (keycode == 65363) // flèche droite
         env->game.plr.dir = turnv(env->game.plr.dir, RADTURN);
-    else if (keycode == 119) // 'w' key (ASCII 119) : avancer
-    {
-        env->game.plr.pos.x += env->game.plr.dir.x * SPEED;
-        env->game.plr.pos.y += env->game.plr.dir.y * SPEED;
-    }
-    else if (keycode == 115) // 's' key (ASCII 115) : reculer
-    {
-        env->game.plr.pos.x -= env->game.plr.dir.x * SPEED;
-        env->game.plr.pos.y -= env->game.plr.dir.y * SPEED;
-    }
-    else if (keycode == 97)  // 'a' key (ASCII 97) : strafe gauche
-    {
-        env->game.plr.pos.x += env->game.plr.dir.y * SPEED;
-        env->game.plr.pos.y += -env->game.plr.dir.x * SPEED;
-    }
-    else if (keycode == 100) // 'd' key (ASCII 100) : strafe droite
-    {
-        env->game.plr.pos.x += -env->game.plr.dir.y * SPEED;
-        env->game.plr.pos.y += env->game.plr.dir.x * SPEED;
-    }
+    if(keycode == 119 || keycode == 115 || keycode == 97 || keycode == 100)
+        env->game.plr.pos = ft_move(&env->game.plr.pos, &env->game.plr.dir, &env->game, keycode);
     ft_setplan(&env->game.plr, FOV);
     ft_draw(&env->game, &env->win);
     return (0);
+}
+
+t_vec    ft_move(t_vec *pos, t_vec *dir, t_game *game, int keycode)
+{
+    t_vec   newpos;
+    
+    if (keycode == 119) // 'w' key (ASCII 119) : avancer
+    {
+        newpos.x = pos->x + (0.001 + dir->x) * SPEED;
+        newpos.y = pos->y + (0.001 + dir->y) * SPEED;
+    }
+    else if (keycode == 115) // 's' key (ASCII 115) : reculer
+    {
+        newpos.x = pos->x - (0.001 + dir->x) * SPEED;
+        newpos.y = pos->y - (0.001 + dir->y) * SPEED;
+    }
+    else if (keycode == 97)  // 'a' key (ASCII 97) : strafe gauche
+    {
+        newpos.x = pos->x + (0.001 + dir->y) * SPEED;
+        newpos.y = pos->y - (0.001 + dir->x) * SPEED;
+    }
+    else if (keycode == 100) // 'd' key (ASCII 100) : strafe droite
+    {
+        newpos.x = pos->x - (0.001 + dir->y) * SPEED;
+        newpos.y = pos->y + (0.001 + dir->x) * SPEED;
+    }
+    if(game->map.map[(int)newpos.x][(int)newpos.y] == '1')
+        return (*pos);
+    return(newpos);
 }
 
 int close_window(t_env *env)
@@ -173,10 +155,11 @@ void ft_setSideDist(t_ray *r, double posX, double posY)
 
 void ft_testhit(t_ray *r, t_game *game)
 {
-    int hit = 0;
+    int hit;
+    
+    hit = 0;
     while (hit == 0)
     {
-        // Avancer d'une cellule dans la direction qui nécessite la plus petite distance
         if (r->sideDist.x < r->sideDist.y)
         {
             r->sideDist.x += r->deltaDist.x;  // On "saute" à la prochaine frontière verticale
@@ -210,7 +193,6 @@ t_vec    ft_onecol(int x, t_player plr)
     camX = 2*x /(double)SCREENX -1;
     rayDir.x =  plr.dir.x + plr.plane.x * camX;
     rayDir.y =  plr.dir.y + plr.plane.y * camX;
-    rayDir.z = 0;
     return(rayDir);
 }
 
@@ -291,7 +273,6 @@ void ft_setplan(t_player *plr, double planeLength)
 {
     plr->plane.x = -plr->dir.y * planeLength;
     plr->plane.y =  plr->dir.x * planeLength;
-    plr->plane.z = 0;
 }
 
 t_vec turnv(t_vec v, double rad)
@@ -299,7 +280,6 @@ t_vec turnv(t_vec v, double rad)
     t_vec rotated;
     rotated.x = v.x * cos(rad) - v.y * sin(rad);
     rotated.y = v.x * sin(rad) + v.y * cos(rad);
-    rotated.z = v.z;
     return rotated;
 }
 

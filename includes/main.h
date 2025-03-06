@@ -33,12 +33,7 @@ typedef struct s_vec
 {
 	double	x;
 	double	y;
-	double	z;
 }	t_vec;
-
-/* Fonctions sur les vecteurs (définitions dans un autre fichier source) */
-t_vec	vec_sub(t_vec a, t_vec b);
-t_vec	vec_normalize(t_vec a);
 
 
 /* ----------------------------

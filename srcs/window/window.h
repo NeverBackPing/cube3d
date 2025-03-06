@@ -26,6 +26,7 @@ int close_window(t_env *env);
 void ft_lim(t_ray *r, int lh, int *size_line, int *bpp, char *data, int x);
 void ft_setdelta(t_ray *r);
 void ft_draw(t_game *game, t_window *win);
+t_vec    ft_move(t_vec *pos, t_vec *dir, t_game *game, int keycode);
 void ft_setplan(t_player *plr, double planeLength);
 void ft_initp(t_game *game, t_player *plr);
 t_vec turnv(t_vec v, double rad);
