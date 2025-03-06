@@ -86,6 +86,7 @@ typedef struct {
 } t_player;
 
 
+
 typedef struct {
 
 	int	mapX;
@@ -124,6 +125,7 @@ typedef struct s_env {
     t_window    win;
     t_game      game;
     t_player    *plr;  // ou game.plr si tu préfères y accéder directement
+    int		mouse;
 } t_env;
 
 // monitor/init_struct.c

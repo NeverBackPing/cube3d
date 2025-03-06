@@ -6,7 +6,7 @@
 /*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 20:30:00 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/03/06 22:10:32 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/07 00:00:52 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,61 @@ void ft_setdelta(t_ray *r)
         r->deltaDist.y = fabs(1 / r->rayDir.y);
 }
 
+// #include <stdio.h>
+
+// int mouse_motion_hook(int x, int y, void *param)
+// {
+//     // static unsigned long last_time = 0;
+//     // unsigned long current_time = get_ticks(); // Fonction qui renvoie le temps en ms
+//     t_env *env = (t_env *)param;
+
+//     // Ne traiter l'événement que si 20 ms se sont écoulées
+//     // if (current_time - last_time < 20)
+//     //     return (0);
+//     (void)y;
+//     // last_time = current_time;
+//     if (x < SCREENX / 3)
+//         env->game.plr.dir = turnv(env->game.plr.dir, -RADTURN * x / 100);
+//     else if (x > SCREENX * (2 / 3))
+//         env->game.plr.dir = turnv(env->game.plr.dir, RADTURN);
+//     ft_setplan(&env->game.plr, FOV);
+//     ft_draw(&env->game, &env->win);
+//     return (0);
+// }
+
+int update(void *param)
+{
+    t_env *env = (t_env *)param;
+
+    env->game.plr.dir = turnv(env->game.plr.dir, RADTURN * ( -((double)env->mouse) / 10.0 ));
+    ft_setplan(&env->game.plr, FOV);
+    ft_draw(&env->game, &env->win);
+
+    return (0);
+}
+
+
+
+int mouse_motion_hook(int x, int y, void *param)
+{
+    t_env *env = (t_env *)param;
+    (void)y;
+    int threshold = SCREENX / 5;  // marge autour du centre
+    int center = SCREENX / 2;
+
+    if (x < threshold)
+        env->mouse = 2;         // Extrême gauche
+    else if (x > SCREENX - threshold)
+        env->mouse = -2;        // Extrême droite
+    else if (x < center - threshold * 0.4)
+        env->mouse = 1;         // Gauche modéré
+    else if (x > center + threshold * 0.4)
+        env->mouse = -1;        // Droite modérée
+    else
+        env->mouse = 0;         // Au centre, pas de rotation
+
+    return (0);
+}
 
 void ft_setplan(t_player *plr, double planeLength)
 {
@@ -295,6 +350,7 @@ int ft_window(t_game *game)
     // Copie du jeu et initialisation du joueur
     env.game = *game;
     ft_initp(&env.game, &env.game.plr);
+    env.mouse = 0;
     
     env.win.win = mlx_new_window(env.win.mlx, SCREENX, SCREENY, "Cub3d Raytracing");
     if (!env.win.win)
@@ -307,7 +363,8 @@ int ft_window(t_game *game)
     // Associer notre structure à MLX
     mlx_hook(env.win.win, 17, 0, (int (*)())close_window, &env);
     mlx_hook(env.win.win, 2, 1L<<0, key_hook, &env); // Passer &env ici
-    
+    mlx_hook(env.win.win, MotionNotify, PointerMotionMask, mouse_motion_hook, &env);
+    mlx_loop_hook(env.win.mlx, update, &env);
     mlx_loop(env.win.mlx);
     return (0);
 }

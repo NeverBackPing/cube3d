@@ -16,8 +16,8 @@
 # define NEXTO1 " 1"
 # define PPLR "NEWS"
 # define RADTURN 0.05
-# define SCREENX 800
-# define SCREENY 600
+# define SCREENX 2000
+# define SCREENY 1000
 # define SPEED 0.1
 # define COLOR 0xFF0000
 
