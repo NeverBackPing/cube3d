@@ -56,6 +56,7 @@ int	ft_tablen(char **tab)
         else if (keycode == 65363) // flèche droite
             env->game.plr.dir = turnv(env->game.plr.dir, -RADTURN);
         ft_setplan(&env->game.plr, FOV);
+
         // Redessiner après modification
         ft_draw(&env->game, &env->win);
         return (0);
@@ -224,15 +225,15 @@ void ft_testhit(t_ray *r, t_game *game)
         int y;
         int offset;
 
-
         Dstart = -lh / 2 + SCREENY / 2;
         Dend = lh / 2 + SCREENY / 2;
+        r->color = COLOR;
         if(Dstart < 0)
             Dstart = 0;
         if(Dend >= SCREENY)
             Dend = SCREENY - 1;
         if (r->side == 1)
-            r->color = (COLOR >> 1) & 8355711;
+            r->color = (r->color >> 1) & 8355711;
         y = Dstart;
         while(y < Dend)
         {
@@ -240,7 +241,6 @@ void ft_testhit(t_ray *r, t_game *game)
             *(unsigned int *)(data + offset) = r->color;
             y++;
         }
-        
     }
 
     void ft_setdelta(t_ray *r)
