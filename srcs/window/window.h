@@ -24,6 +24,7 @@
 int	ft_tablen(char **tab);
 int close_window(t_env *env);
 void ft_lim(t_ray *r, int lh, int *size_line, int *bpp, char *data, int x);
+t_vec	ft_testpos(t_vec newpos, t_vec *pos, t_game *game);
 void ft_setdelta(t_ray *r);
 void ft_draw(t_game *game, t_window *win);
 t_vec    ft_move(t_vec *pos, t_vec *dir, t_game *game, int keycode);

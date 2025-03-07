@@ -42,33 +42,52 @@ int	key_hook(int keycode, void *param)
 	return (0);
 }
 
-t_vec	ft_move(t_vec *pos, t_vec *dir, t_game *game, int keycode)
+t_vec ft_move(t_vec *pos, t_vec *dir, t_game *game, int keycode)
 {
-	t_vec	newpos;
+    t_vec newpos;
 
-	if (keycode == 119) // 'w' key (ASCII 119) : avancer
+	newpos.x = 0;
+	if (keycode == 119) // 'w' : avancer
 	{
 		newpos.x = pos->x + (0.001 + dir->x) * SPEED;
 		newpos.y = pos->y + (0.001 + dir->y) * SPEED;
 	}
-	else if (keycode == 115) // 's' key (ASCII 115) : reculer
+	else if (keycode == 115) // 's' : reculer
 	{
 		newpos.x = pos->x - (0.001 + dir->x) * SPEED;
 		newpos.y = pos->y - (0.001 + dir->y) * SPEED;
 	}
-	else if (keycode == 97)  // 'a' key (ASCII 97) : strafe gauche
+	else if (keycode == 97)  // 'a' : strafe gauche
 	{
 		newpos.x = pos->x + (0.001 + dir->y) * SPEED;
 		newpos.y = pos->y - (0.001 + dir->x) * SPEED;
 	}
-	else if (keycode == 100) // 'd' key (ASCII 100) : strafe droite
+	else if (keycode == 100) // 'd' : strafe droite
 	{
 		newpos.x = pos->x - (0.001 + dir->y) * SPEED;
 		newpos.y = pos->y + (0.001 + dir->x) * SPEED;
 	}
-	if(game->map.map[(int)newpos.x][(int)newpos.y] == '1')
-		return (*pos);
-	return(newpos);
+	(void)keycode;
+	return(ft_testpos(newpos, pos, game));
+}
+
+
+t_vec	ft_testpos(t_vec newpos, t_vec *pos, t_game *game)
+{
+	t_vec pos_try;
+
+	if (game->map.map[(int)newpos.x][(int)newpos.y] != '1')
+		return newpos;
+	pos_try.x = newpos.x;
+	pos_try.y = pos->y;
+	if (game->map.map[(int)pos_try.x][(int)pos_try.y] != '1')
+		return pos_try;
+	pos_try.x = pos->x;
+	pos_try.y = newpos.y;
+	if (game->map.map[(int)pos_try.x][(int)pos_try.y] != '1')
+		return pos_try;
+	return *pos;
+
 }
 
 int	close_window(t_env *env)
@@ -175,7 +194,7 @@ void	ft_testhit(t_ray *r, t_game *game)
 		if (r->mapY < 0 || r->mapY >= ft_tablen(game->map.map) ||
 			r->mapX < 0 || r->mapX >= (int)ft_strlen(game->map.map[r->mapY]))
 				hit = 1;
-		if (game->map.map[r->mapY][r->mapX] == '1')
+		if (game->map.map[r->mapX][r->mapY] == '1')
 			hit = 1;
 	}
 	if (r->side == 0)
