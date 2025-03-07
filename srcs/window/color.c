@@ -1,6 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 20:30:00 by gtraiman          #+#    #+#             */
+/*   Updated: 2025/03/07 00:00:52 by gtraiman         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "window.h"
-#include "../../includes/main.h"
-#include <stdlib.h>
 
 void	ft_draw_background(t_game *game, char *data, int size_line)
 {
