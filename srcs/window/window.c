@@ -76,15 +76,15 @@ t_vec	ft_testpos(t_vec newpos, t_vec *pos, t_game *game)
 {
 	t_vec pos_try;
 
-	if (game->map.map[(int)newpos.x][(int)newpos.y] != '1')
+	if (game->map.map[(int)newpos.y][(int)newpos.x] != '1')
 		return newpos;
 	pos_try.x = newpos.x;
 	pos_try.y = pos->y;
-	if (game->map.map[(int)pos_try.x][(int)pos_try.y] != '1')
+	if (game->map.map[(int)pos_try.y][(int)pos_try.x] != '1')
 		return pos_try;
 	pos_try.x = pos->x;
 	pos_try.y = newpos.y;
-	if (game->map.map[(int)pos_try.x][(int)pos_try.y] != '1')
+	if (game->map.map[(int)pos_try.y][(int)pos_try.x] != '1')
 		return pos_try;
 	return *pos;
 
@@ -114,8 +114,8 @@ void	ft_findp(char **map, t_vec *pos)
 		{
 			if (ft_cins("NESW", map[i][j]) == 1)
 			{
-				pos->x = i + 0.5;
-				pos->y = j + 0.5;
+				pos->y = i + 0.5;
+				pos->x = j + 0.5;
 				if(map[i][j] == 'E')
 					pos->x--;
 				return ;
@@ -131,11 +131,11 @@ void	ft_initp(t_game *game, t_player *plr)
 	ft_findp(game->map.map,&plr->pos);
 	plr->dir.y = 0;
 	plr->dir.x = 0;
-	if(game->map.map[(int)plr->pos.x][(int)plr->pos.y] == 'N')
+	if(game->map.map[(int)plr->pos.y][(int)plr->pos.x] == 'N')
 		plr->dir.y = 1;
-	else if(game->map.map[(int)plr->pos.x][(int)plr->pos.y] == 'S')
+	else if(game->map.map[(int)plr->pos.y][(int)plr->pos.x] == 'S')
 		plr->dir.y = -1;
-	else if(game->map.map[(int)plr->pos.x][(int)plr->pos.y] == 'W')
+	else if(game->map.map[(int)plr->pos.y][(int)plr->pos.x] == 'W')
 		plr->dir.x = -1;
 	else
 		plr->dir.x = 1;
@@ -172,11 +172,8 @@ void	ft_setSideDist(t_ray *r, double posX, double posY)
 	}
 }
 
-void	ft_testhit(t_ray *r, t_game *game)
+void	ft_testhit(t_ray *r, t_game *game, int hit)
 {
-	int	hit;
-
-	hit = 0;
 	while (hit == 0)
 	{
 		if (r->sideDist.x < r->sideDist.y)
@@ -194,7 +191,7 @@ void	ft_testhit(t_ray *r, t_game *game)
 		if (r->mapY < 0 || r->mapY >= ft_tablen(game->map.map) ||
 			r->mapX < 0 || r->mapX >= (int)ft_strlen(game->map.map[r->mapY]))
 				hit = 1;
-		if (game->map.map[r->mapX][r->mapY] == '1')
+		if (game->map.map[r->mapY][r->mapX] == '1')
 			hit = 1;
 	}
 	if (r->side == 0)
@@ -229,7 +226,7 @@ void	ft_allcol(t_game *game, int *size_line, int *bpp, char *data)
 		r.mapY = (int)game->plr.pos.y;
 		ft_setdelta(&r);
 		ft_setSideDist(&r, game->plr.pos.x, game->plr.pos.y);
-		ft_testhit(&r, game);
+		ft_testhit(&r, game, 0);
 		lineHeight = (int)(SCREENY / r.perpWallDist);
 		ft_lim(&r, lineHeight, size_line, bpp, data, x);
 		x++;
