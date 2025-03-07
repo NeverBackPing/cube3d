@@ -27,8 +27,8 @@
 # include "../srcs/dependency/gnl/get_next_line.h"
 
 /* ----------------------------
-   Structure pour un vecteur 3D
-   ---------------------------- */
+	Structure pour un vecteur 3D
+---------------------------- */
 typedef struct s_vec
 {
 	double	x;
@@ -38,7 +38,7 @@ typedef struct s_vec
 
 /* ----------------------------
 	Structure pour l'image
-	---------------------------- */
+---------------------------- */
 typedef struct s_img
 {
 	void	*img;
@@ -50,9 +50,7 @@ typedef struct s_img
 
 /* -----------------------------------------------------
 	Prototypes des fonctions MLX et hooks
-	----------------------------------------------------- */
-
-
+----------------------------------------------------- */
 typedef struct s_texture
 {
 	int		r;
@@ -79,15 +77,17 @@ typedef struct s_map
 	char	**map;
 } t_map;
 
-typedef struct {
-	t_vec pos;
-	t_vec dir;
-	t_vec plane;
+typedef struct s_player
+{
+	t_vec	pos;
+	t_vec	dir;
+	t_vec	plane;
 } t_player;
 
 
 
-typedef struct {
+typedef struct s_ray
+{
 
 	int	mapX;
 	int	mapY;
@@ -103,7 +103,8 @@ typedef struct {
 
 } t_ray;
 
-typedef struct {
+typedef struct s_window
+{
 
 	void 	*img;
 	void	*mlx;
@@ -113,7 +114,7 @@ typedef struct {
 
 typedef struct s_game
 {
-    t_player plr;
+	t_player plr;
 	char		*line_save;
 	int			fd;
 	t_map		map;
@@ -122,10 +123,10 @@ typedef struct s_game
 
 
 typedef struct s_env {
-    t_window    win;
-    t_game      game;
-    t_player    *plr;  // ou game.plr si tu préfères y accéder directement
-    int		mouse;
+	t_window	win;
+	t_game		game;
+	t_player	*plr;  // ou game.plr si tu préfères y accéder directement
+	int			mouse;
 } t_env;
 
 // monitor/init_struct.c
@@ -158,10 +159,9 @@ void	set_color(t_game *game, char *set);
 // parsing/map_tool.c
 void	map_init(t_game *game);
 void	get_lenght_map(t_game *game);
+//window/color.c
+void	ft_draw_background(t_game *game, char *data, int size_line);
 //window/window.c
-/* -----------------------------------------------------
-   Prototypes des fonctions de rendu
-   ----------------------------------------------------- */
 int	ft_window(t_game *game);
 
 #endif

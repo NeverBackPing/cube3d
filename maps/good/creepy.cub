@@ -3,8 +3,8 @@
 SO                  sprites/image3.xpm
 WE sprites/image2.xpm
 
-C 35,190,73
-F 15,6,40
+F 50,60,40
+C 180,160,90
 
 111111111111111
 111111000111111

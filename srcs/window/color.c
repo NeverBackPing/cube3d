@@ -1,21 +1,26 @@
+#include "window.h"
 #include "../../includes/main.h"
+#include <stdlib.h>
 
-// void	color_rgb_roof(t_game *game, t_vars *vars)
-// {
-// 	int		i;
-// 	int		j;
+void	ft_draw_background(t_game *game, char *data, int size_line)
+{
+	int	x;
+	int	y;
+	int	*img_data = (int *)data;
 
-// 	(void)game;
-// 	i = 0;
-// 	while (i < vars->scene.win_width)
-// 	{
-// 		j = 0;
-// 		while (j <vars->scene.win_height / 2)
-// 		{
-// 			mlx_pixel_put(vars->mlx, vars->win, i, j, 0xFFff5733);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
+	y = 0;
+	while (y < SCREENY)
+	{
+		x = 0;
+		while (x < SCREENX)
+		{
+			if (y < SCREENY / 2)
+				img_data[y * (size_line / 4) + x] = game->texture.roof_color;
+			else
+				img_data[y * (size_line / 4) + x] = game->texture.ground_color;
+			x++;
+		}
+		y++;
+	}
+}
 
