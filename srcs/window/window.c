@@ -252,6 +252,7 @@ void	ft_draw(t_game *game, t_window *win)
 	ft_draw_background(game, data, size_line);
 	ft_allcol(game, &size_line, &bpp, data);
 	mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);
+	draw_minimap(game, data, win, size_line);
 	mlx_destroy_image(win->mlx, win->img);
 }
 
@@ -323,7 +324,6 @@ int update(void *param)
 	env->game.plr.dir = turnv(env->game.plr.dir, RADTURN * ( -((double)env->mouse) / 10.0 ));
 	ft_setplan(&env->game.plr, FOV);
 	ft_draw(&env->game, &env->win);
-
 	return (0);
 }
 

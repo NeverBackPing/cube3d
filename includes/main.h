@@ -103,12 +103,22 @@ typedef struct s_ray
 
 } t_ray;
 
+typedef struct s_minimap
+{
+	int	px;
+	int	py;
+	int	orientation_x;
+	int	orientation_y;
+	int	start_x;
+	int	start_y;
+} t_minimap;
+
 typedef struct s_window
 {
-
-	void 	*img;
-	void	*mlx;
-	int		*win;
+	void 		*img;
+	void		*mlx;
+	int			*win;
+	t_minimap	minimap;
 } t_window;
 
 
@@ -159,6 +169,9 @@ void	set_color(t_game *game, char *set);
 // parsing/map_tool.c
 void	map_init(t_game *game);
 void	get_lenght_map(t_game *game);
+//window/minimap.c
+void	draw_minimap(t_game *game, char *data, t_window *win, int size_line);
+void	draw_tile(t_window *win, int *img_data, int color, int size_line);
 //window/color.c
 void	ft_draw_background(t_game *game, char *data, int size_line);
 //window/window.c

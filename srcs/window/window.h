@@ -11,7 +11,10 @@
 
 
 # define FOV 0.66
-
+# define TILE_SIZE 10
+# define PLAYER_SIZE 4
+# define MINIMAP_SCALE 0.2
+# define MINIMAP_SIZE 150
 # define NEXTO0 "01NEWS"
 # define NEXTO1 " 1"
 # define PPLR "NEWS"

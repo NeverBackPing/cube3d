@@ -16,9 +16,10 @@ void	ft_draw_background(t_game *game, char *data, int size_line)
 {
 	int	x;
 	int	y;
-	int	*img_data = (int *)data;
+	int	*img_data;
 
 	y = 0;
+	img_data = (int *)data;
 	while (y < SCREENY)
 	{
 		x = 0;
