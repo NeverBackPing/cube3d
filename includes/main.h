@@ -51,6 +51,18 @@ typedef struct s_img
 /* -----------------------------------------------------
 	Prototypes des fonctions MLX et hooks
 ----------------------------------------------------- */
+typedef struct s_wall
+{
+	char 	*c;
+	void 	*p;
+	int		height;
+	int		width;
+	void	*img;
+	int		bpp;
+	int		size_line;
+	int		endian;
+}	t_wall;
+
 typedef struct s_texture
 {
 	int		r;
@@ -58,10 +70,10 @@ typedef struct s_texture
 	int		b;
 	int		count;
 	int		count_player;
-	char	*north_texture;
-	char	*east_texture;
-	char	*south_texture;
-	char	*west_texture;
+	t_wall 	*north;
+	t_wall	*south;
+	t_wall	*east;
+	t_wall	*west;
 	int		ground_color;
 	char	*line_save;
 	int		roof_color;
@@ -96,10 +108,18 @@ typedef struct s_ray
 	int	hit;
 	int	color;
 	int	side;
+	int	lh;
+	int	Ds;
+	int	De;
+	int	texX;
+	int	texY;
 	t_vec rayDir;
 	t_vec sideDist;
 	t_vec deltaDist;
-	double perpWallDist;
+	t_wall	*texture;
+	double	wallX;
+	double	texPos;
+	double	perpWallDist;
 
 } t_ray;
 
@@ -118,6 +138,8 @@ typedef struct s_window
 	void 		*img;
 	void		*mlx;
 	int			*win;
+	int		bpp;
+	int		size_line;
 	t_minimap	minimap;
 } t_window;
 

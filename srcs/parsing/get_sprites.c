@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_sprites.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:17:06 by sjossain          #+#    #+#             */
-/*   Updated: 2025/03/03 17:17:07 by sjossain         ###   ########.fr       */
+/*   Updated: 2025/03/17 18:12:20 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,27 +85,27 @@ void	alloc_graph_set(t_game *game, char *file_xpm, char *set_graph)
 	}
 	if (!ft_strcmp(set_graph,"NO"))
 	{
-		game->texture.north_texture = ft_strdup(file_xpm);
-		check_is_fail(game, game->texture.north_texture);
+		game->texture.north->c = ft_strdup(file_xpm);
+		check_is_fail(game, game->texture.north->c);
 		game->texture.count++;
 	}
 	if (!ft_strcmp(set_graph,"SO"))
 	{
-		game->texture.south_texture = ft_strdup(file_xpm);
-		check_is_fail(game, game->texture.south_texture);
+		game->texture.south->c = ft_strdup(file_xpm);
+		check_is_fail(game, game->texture.south->c);
 		game->texture.count++;
 
 	}
 	if (!ft_strcmp(set_graph,"WE"))
 	{
-		game->texture.west_texture = ft_strdup(file_xpm);
-		check_is_fail(game, game->texture.west_texture);
+		game->texture.west->c = ft_strdup(file_xpm);
+		check_is_fail(game, game->texture.west->c);
 		game->texture.count++;
 
 	}
 	if (ft_strcmp(set_graph,"EA"))
 		return ;
-	game->texture.east_texture = ft_strdup(file_xpm);
-	check_is_fail(game, game->texture.east_texture);
+	game->texture.east->c = ft_strdup(file_xpm);
+	check_is_fail(game, game->texture.east->c);
 	game->texture.count++;
 }

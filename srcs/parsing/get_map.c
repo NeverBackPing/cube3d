@@ -28,10 +28,10 @@ void	alloc_map(t_game *game, t_map *map, int lengh, char *line)
 		{
 			close_fd(game);
 			dest_free(map->map);
-			free(game->texture.north_texture);
-			free(game->texture.east_texture);
-			free(game->texture.south_texture);
-			free(game->texture.west_texture);
+			free(game->texture.north->c);
+			free(game->texture.east->c);
+			free(game->texture.south->c);
+			free(game->texture.west->c);
 			ft_putstr_fd("\033[0;31mError\033[0m: Fail malloc \n", 2);
 			exit(0);
 		}
