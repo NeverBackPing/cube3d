@@ -38,7 +38,7 @@ void	store_path_fd(t_game *game, char *line, char *set_graph)
 	end = i + 1;
 	check_xpm(game, line, start, end);
 	max = end - start;
-	file_xpm = malloc((max + 1) * sizeof(char));
+	file_xpm = malloc((max + 2) * sizeof(char));
 	ft_strlcpy(file_xpm, (line + start), end);
 	alloc_graph_set(game, file_xpm, set_graph);
 	free(file_xpm);
