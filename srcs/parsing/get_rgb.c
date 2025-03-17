@@ -31,8 +31,6 @@ void	set_color(t_game *game, char *set)
 
 int	skip_spaces(char *line, int i)
 {
-	if ((line[i] != ' ' || line[i] != '\t'))
-		return (i);
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
 	return (i);

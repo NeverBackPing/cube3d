@@ -61,8 +61,8 @@ void	check_sep(t_game *game, char *line)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, bad input RGB detected !\n", 2);
-
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
+			bad input RGB detected !\n", 2);
 		exit(0);
 	}
 }
@@ -76,19 +76,21 @@ void	store_rgb(t_game *game, char *line, char *set_graph)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, too many graphics setting detected !\n", 2);
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, too many \
+			graphics setting detected !\n", 2);
 		exit(0);
 	}
 	check_sep(game, line);
 	i = skip_spaces(line, i);
 	game->texture.r = rgb_check(game, line, i);
 	i = skip_sep(line, i);
+	i = skip_spaces(line, i);
 	game->texture.g = rgb_check(game, line, i);
 	i = skip_sep(line, i);
+	i = skip_spaces(line, i);
 	game->texture.b = rgb_check(game, line, i);
 	check_rgb(game);
 	set_color(game, set_graph);
-
 }
 
 void	check_set_graph(t_game *game, char *line, char *set_graph)
@@ -100,17 +102,18 @@ void	check_set_graph(t_game *game, char *line, char *set_graph)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong graphics setting detected !\n", 2);
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong \
+			graphics setting detected !\n", 2);
 		exit(0);
 	}
 	if (ft_strstr(line, "NO"))
-		store_path_fd(game, (line + i), "NO");
+		store_path_fd(game, (line + i), set_graph);
 	if (ft_strstr(line, "SO"))
-		store_path_fd(game, (line + i), "SO");
+		store_path_fd(game, (line + i), set_graph);
 	if (ft_strstr(line, "WE"))
-		store_path_fd(game, (line + i), "WE");
+		store_path_fd(game, (line + i), set_graph);
 	if (ft_strstr(line, "EA"))
-		store_path_fd(game, (line + i), "EA");
+		store_path_fd(game, (line + i), set_graph);
 	if (ft_strstr(line, "F"))
 		store_rgb(game, (line + i), set_graph);
 	if (ft_strstr(line, "C"))
@@ -131,13 +134,17 @@ void	set_graphique(t_game *game, char *line)
 		if (ft_strstr(line, set_graph[i]))
 		{
 			count_word = words(line);
-			if (count_word <= 3 && count_word >= 2)
+			if ((count_word <= 3 && count_word >= 2))
+				check_set_graph(game, line, (char *)set_graph[i]);
+			else if ((!ft_strcmp(set_graph[i], "F") || \
+				!ft_strcmp(set_graph[i], "C")))
 				check_set_graph(game, line, (char *)set_graph[i]);
 			else
 			{
 				free(game->line_save);
 				free_ressource(game);
-				ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong graphics setting detected !\n", 2);
+				ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
+					wrong graphics setting detected !\n", 2);
 				exit(0);
 			}
 		}
@@ -167,7 +174,8 @@ void	get_set_graph(t_game *game, char *filename)
 	if (game->texture.count !=  GRAPH_CHECK)
 	{
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong graphics setting detected!\n", 2);
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong \
+			graphics setting detected!\n", 2);
 		exit(0);
 	}
 }
