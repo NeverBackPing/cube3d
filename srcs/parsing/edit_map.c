@@ -6,7 +6,7 @@
 /*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:55:13 by sjossain          #+#    #+#             */
-/*   Updated: 2025/03/04 16:50:54 by sjossain         ###   ########.fr       */
+/*   Updated: 2025/03/17 16:06:58 by sjossain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,6 @@ void	edit_map(t_game *game)
 {
 	get_big_row(&game->map);
 	add_space(game);
+	if (game->map.lenght > 50 && game->map.row > 130)
+		ft_putstr_fd("\033[0;31mError\033[0m: Sory cant draw minimap\n", 2);
 }

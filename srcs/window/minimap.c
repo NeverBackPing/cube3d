@@ -99,6 +99,8 @@ void	draw_minimap(t_game *game, char *data, t_window *win, int size_line)
 	int	color;
 	int	*img_data;
 
+	if (game->map.lenght > 50 && game->map.row > 130)
+		return ;
 	y = 0;
 	img_data = (int *)data;
 	while (y < ft_tablen(game->map.map))
