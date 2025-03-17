@@ -92,6 +92,7 @@ t_vec	ft_testpos(t_vec newpos, t_vec *pos, t_game *game)
 
 int	close_window(t_env *env)
 {
+	ft_free_textures(&env->game, &env->win);
 	free_ressource(&env->game);
 	mlx_destroy_window(env->win.mlx, env->win.win);
 	mlx_destroy_display(env->win.mlx);
@@ -212,74 +213,213 @@ t_vec	ft_onecol(int x, t_player plr)
 	return(rayDir);
 }
 
-void	ft_allcol(t_game *game, int *size_line, int *bpp, char *data)
+void ft_init_ray(t_ray *r, t_game *game, int x)
 {
-	int		x;
-	t_ray	r;
-	int		lineHeight;
-
-	x = 0;
-	while(x < SCREENX)
-	{
-		r.rayDir = ft_onecol(x, game->plr);
-		r.mapX = (int)game->plr.pos.x;
-		r.mapY = (int)game->plr.pos.y;
-		ft_setdelta(&r);
-		ft_setSideDist(&r, game->plr.pos.x, game->plr.pos.y);
-		ft_testhit(&r, game, 0);
-		lineHeight = (int)(SCREENY / r.perpWallDist);
-		ft_lim(&r, lineHeight, size_line, bpp, data, x);
-		x++;
-	}
+    r->rayDir = ft_onecol(x, game->plr);
+    r->mapX = (int)game->plr.pos.x;
+    r->mapY = (int)game->plr.pos.y;
+    ft_setdelta(r);
+    ft_setSideDist(r, game->plr.pos.x, game->plr.pos.y);
+    ft_testhit(r, game, 0);
+    r->lh = (int)(SCREENY / r->perpWallDist);
+    r->Ds = -r->lh / 2 + SCREENY / 2;
+    if (r->Ds < 0)
+        r->Ds = 0;
+    r->De = r->lh / 2 + SCREENY / 2;
+    if (r->De >= SCREENY)
+        r->De = SCREENY - 1;
+    r->texture = ft_get_texture(game, r);
 }
+
+void ft_allcol(t_game *game, char *data, t_window *win)
+{
+    int x;
+    t_ray r;
+
+    x = 0;
+
+    while (x < SCREENX)
+    {
+        ft_init_ray(&r, game, x);
+        calculate_wallX(&r, &game->plr);
+        calculate_texX(&r, r.texture->width);
+        draw_textured_wall(&r, x, data, win);
+        x++;
+    }
+}
+
 
 void	ft_draw(t_game *game, t_window *win)
 {
-	int		bpp;
-	int		size_line;
 	int		endian;
 	char	*data;
 
 	win->img = mlx_new_image(win->mlx, SCREENX, SCREENY);
 	if (!win->img)
 		return;
-	data = mlx_get_data_addr(win->img, &bpp, &size_line, &endian);
+	data = mlx_get_data_addr(win->img, &win->bpp, &win->size_line, &endian);
 	if (!data)
 	{
 		mlx_destroy_image(win->mlx, win->img);
 		return;
 	}
-	ft_draw_background(game, data, size_line);
-	ft_allcol(game, &size_line, &bpp, data);
+	ft_draw_background(game, data, win->size_line);
+	ft_allcol(game, data, win);
 	mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);
-	draw_minimap(game, data, win, size_line);
+	draw_minimap(game, data, win, win->size_line);
 	mlx_destroy_image(win->mlx, win->img);
 }
 
-void	ft_lim(t_ray *r, int lh, int *size_line, int *bpp, char *data, int x)
+void calculate_wallX(t_ray *r, t_player *plr)
 {
-	int	Dstart;
-	int	Dend;
-	int	y;
-	int	offset;
-
-	Dstart = -lh / 2 + SCREENY / 2;
-	Dend = lh / 2 + SCREENY / 2;
-	r->color = COLOR;
-	if(Dstart < 0)
-		Dstart = 0;
-	if(Dend >= SCREENY)
-		Dend = SCREENY - 1;
-	if (r->side == 1)
-		r->color = (r->color >> 1) & 8355711;
-	y = Dstart;
-	while(y < Dend)
-	{
-		offset = y * *size_line + x * (*bpp / 8);
-		*(unsigned int *)(data + offset) = r->color;
-		y++;
-	}
+    if (r->side == 0)
+        r->wallX = plr->pos.y + r->perpWallDist * r->rayDir.y;
+    else
+        r->wallX = plr->pos.x + r->perpWallDist * r->rayDir.x;
+    r->wallX -= floor(r->wallX);
 }
+
+void calculate_texX(t_ray *r, int texWidth)
+{
+    r->texX = (int)(r->wallX * (double)texWidth);
+    if (r->side == 0 && r->rayDir.x > 0)
+        r->texX = texWidth - r->texX - 1;
+    if (r->side == 1 && r->rayDir.y < 0)
+        r->texX = texWidth - r->texX - 1;
+}
+
+// int get_texture_color(t_ray *r, int texX, int texY)
+// {
+//     int offset;
+
+//     if (!r->texture || !r->texture->p)
+//         return 0;
+//     if (texX < 0 || texX >= r->texture->width || texY < 0 || texY >= r->texture->height)
+//         return 0;
+//     offset = texY * r->texture->size_line + texX * (r->texture->bpp / 8);
+//     return *(int *)(r->texture->p + offset);
+// }
+int get_texture_color(t_ray *r, int texX, int texY)
+{
+    int offset;
+
+    if (!r->texture)
+    {
+        printf("Error: Texture is NULL\n");
+        return 0;
+    }
+
+    if (!r->texture->p)
+    {
+        printf("Error: Texture data is NULL\n");
+        return 0;
+    }
+
+    // Vérifiez que texX et texY sont dans les limites de la texture
+    if (texX < 0 || texX >= r->texture->width || texY < 0 || texY >= r->texture->height)
+    {
+        printf("Error: Texture coordinates out of bounds (texX=%d, texY=%d)\n", texX, texY);
+        return 0;
+    }
+
+    offset = texY * r->texture->size_line + texX * (r->texture->bpp / 8);
+
+    // Vérifiez que l'offset est dans les limites de la texture
+    if (offset < 0 || offset >= r->texture->size_line * r->texture->height)
+    {
+        printf("Error: Invalid offset (offset=%d)\n", offset);
+        return 0;
+    }
+
+    return *(int *)(r->texture->p + offset);
+}
+
+void draw_textured_wall(t_ray *r, int x, char *data, t_window *win)
+{
+    int y;
+    double step;
+    unsigned int color;
+    int offset;
+
+    step = 1.0 * r->texture->height / r->lh;
+    r->texPos = (r->Ds - SCREENY / 2 + r->lh / 2) * step;
+
+    y = r->Ds;
+    while (y < r->De)
+    {
+        r->texY = (int)r->texPos & (r->texture->height - 1);
+        r->texPos += step;
+
+        color = get_texture_color(r, r->texX, r->texY);
+        if (r->side == 1)
+            color = (color >> 1) & 8355711;
+
+        offset = y * win->size_line + x * (win->bpp / 8);
+        *(unsigned int *)(data + offset) = color;
+        y++;
+    }
+}
+
+t_wall *ft_get_texture(t_game *game, t_ray *r)
+{
+    if (r->side == 1)
+    {
+        if (r->rayDir.y < 0)
+            return game->texture.north;
+        else
+            return game->texture.south;
+    }
+    else
+    {
+        if (r->rayDir.x < 0)
+            return game->texture.west;
+        else
+            return game->texture.east;
+    }
+}
+
+void load_textures(t_env *env, t_game *game, t_window *win)
+{
+    free(game->texture.south->c);
+    game->texture.south->c = ft_strdup("./sprites/image2.xpm");
+    free(game->texture.north->c);
+    game->texture.north->c = ft_strdup("./sprites/image2.xpm");
+    free(game->texture.west->c);
+    game->texture.west->c = ft_strdup("./sprites/image2.xpm");
+    free(game->texture.east->c);
+    game->texture.east->c = ft_strdup("./sprites/image2.xpm");
+    game->texture.north->img = mlx_xpm_file_to_image(win->mlx, game->texture.north->c, &game->texture.north->width, &game->texture.north->height);
+    if (game->texture.north->img)
+        game->texture.north->p = mlx_get_data_addr(game->texture.north->img, &game->texture.north->bpp, &game->texture.north->size_line, &game->texture.north->endian);
+    game->texture.south->img = mlx_xpm_file_to_image(win->mlx, game->texture.south->c, &game->texture.south->width, &game->texture.south->height);
+    if (game->texture.south->img)
+        game->texture.south->p = mlx_get_data_addr(game->texture.south->img, &game->texture.south->bpp, &game->texture.south->size_line, &game->texture.south->endian);
+    game->texture.east->img = mlx_xpm_file_to_image(win->mlx, game->texture.east->c, &game->texture.east->width, &game->texture.east->height);
+    if (game->texture.east->img)
+        game->texture.east->p = mlx_get_data_addr(game->texture.east->img, &game->texture.east->bpp, &game->texture.east->size_line, &game->texture.east->endian);
+    game->texture.west->img = mlx_xpm_file_to_image(win->mlx, game->texture.west->c, &game->texture.west->width, &game->texture.west->height);
+    if (game->texture.west->img)
+        game->texture.west->p = mlx_get_data_addr(game->texture.west->img, &game->texture.west->bpp, &game->texture.west->size_line, &game->texture.west->endian);
+    if (!game->texture.north->img || !game->texture.south->img || !game->texture.east->img || !game->texture.west->img)
+    {
+        printf("Error: Failed to load textures\n");
+        close_window(env);
+    }
+}
+
+
+void ft_free_textures(t_game *game, t_window *win)
+{
+    if (game->texture.north->img)
+        	mlx_destroy_image(win->mlx, game->texture.north->img);
+    if (game->texture.south->img)
+       		mlx_destroy_image(win->mlx, game->texture.south->img);
+    if (game->texture.east->img)
+        	mlx_destroy_image(win->mlx, game->texture.east->img);
+    if (game->texture.west->img)
+    		mlx_destroy_image(win->mlx, game->texture.west->img);
+}
+
 
 void	ft_setdelta(t_ray *r)
 {
@@ -294,28 +434,6 @@ void	ft_setdelta(t_ray *r)
 		r->deltaDist.y = fabs(1 / r->rayDir.y);
 }
 
-// #include <stdio.h>
-
-// int mouse_motion_hook(int x, int y, void *param)
-// {
-//     // static unsigned long last_time = 0;
-//     // unsigned long current_time = get_ticks(); // Fonction qui renvoie le temps en ms
-//     t_env *env = (t_env *)param;
-
-//     // Ne traiter l'événement que si 20 ms se sont écoulées
-//     // if (current_time - last_time < 20)
-//     //     return (0);
-//     (void)y;
-//     // last_time = current_time;
-//     if (x < SCREENX / 3)
-//         env->game.plr.dir = turnv(env->game.plr.dir, -RADTURN * x / 100);
-//     else if (x > SCREENX * (2 / 3))
-//         env->game.plr.dir = turnv(env->game.plr.dir, RADTURN);
-//     ft_setplan(&env->game.plr, FOV);
-//     ft_draw(&env->game, &env->win);
-//     return (0);
-// }
-
 int update(void *param)
 {
 	t_env	*env;
@@ -326,8 +444,6 @@ int update(void *param)
 	ft_draw(&env->game, &env->win);
 	return (0);
 }
-
-
 
 int	mouse_motion_hook(int x, int y, void *param)
 {
@@ -386,6 +502,7 @@ int	ft_window(t_game *game)
 		free_ressource(game);
 		return (1);
 	}
+	load_textures(&env, &env.game, &env.win);
 	ft_draw(&env.game, &env.win);
 	// Associer notre structure à MLX
 	mlx_hook(env.win.win, 17, 0, (int (*)())close_window, &env);
