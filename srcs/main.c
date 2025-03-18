@@ -12,18 +12,6 @@
 
 #include "../includes/main.h"
 
-void ft_printab(char **tab)
-{
-	int	i = 0;
-
-	while(tab[i])
-	{
-		printf("$%s$\n", tab[i]);
-		i++;
-	}
-}
-
-
 int	main(int ac, char **av)
 {
 	t_game	game;
@@ -38,7 +26,6 @@ int	main(int ac, char **av)
 	get_map(&game, av[1]);
 	map_is_good(&game);
 	edit_map(&game);
-	//ft_printab(game.map.map);
 	ft_window(&game);
 	free_ressource(&game);
 	return (0);
