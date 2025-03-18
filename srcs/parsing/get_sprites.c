@@ -6,7 +6,7 @@
 /*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:17:06 by sjossain          #+#    #+#             */
-/*   Updated: 2025/03/17 18:12:20 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/18 15:10:14 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	check_is_fail(t_game *game, char *str)
 
 void	alloc_graph_set(t_game *game, char *file_xpm, char *set_graph)
 {
-	if (game->texture.count == 4)
+	if (game->txt.count == 4)
 	{
 		free(game->line_save);
 		free_ressource(game);
@@ -85,27 +85,27 @@ void	alloc_graph_set(t_game *game, char *file_xpm, char *set_graph)
 	}
 	if (!ft_strcmp(set_graph,"NO"))
 	{
-		game->texture.north->c = ft_strdup(file_xpm);
-		check_is_fail(game, game->texture.north->c);
-		game->texture.count++;
+		game->txt.n->c = ft_strdup(file_xpm);
+		check_is_fail(game, game->txt.n->c);
+		game->txt.count++;
 	}
 	if (!ft_strcmp(set_graph,"SO"))
 	{
-		game->texture.south->c = ft_strdup(file_xpm);
-		check_is_fail(game, game->texture.south->c);
-		game->texture.count++;
+		game->txt.s->c = ft_strdup(file_xpm);
+		check_is_fail(game, game->txt.s->c);
+		game->txt.count++;
 
 	}
 	if (!ft_strcmp(set_graph,"WE"))
 	{
-		game->texture.west->c = ft_strdup(file_xpm);
-		check_is_fail(game, game->texture.west->c);
-		game->texture.count++;
+		game->txt.w->c = ft_strdup(file_xpm);
+		check_is_fail(game, game->txt.w->c);
+		game->txt.count++;
 
 	}
 	if (ft_strcmp(set_graph,"EA"))
 		return ;
-	game->texture.east->c = ft_strdup(file_xpm);
-	check_is_fail(game, game->texture.east->c);
-	game->texture.count++;
+	game->txt.e->c = ft_strdup(file_xpm);
+	check_is_fail(game, game->txt.e->c);
+	game->txt.count++;
 }

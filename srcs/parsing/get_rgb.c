@@ -16,16 +16,16 @@ void	set_color(t_game *game, char *set)
 {
 	unsigned int	color;
 
-	color = (game->texture.r << 16) | (game->texture.g << 8) | game->texture.b;
+	color = (game->txt.r << 16) | (game->txt.g << 8) | game->txt.b;
 	if (!ft_strcmp(set, "F"))
 	{
-		game->texture.roof_color = color;
-		game->texture.count++;
+		game->txt.roof_color = color;
+		game->txt.count++;
 	}
 	if (!ft_strcmp(set, "C"))
 	{
-		game->texture.ground_color = color;
-		game->texture.count++;
+		game->txt.ground_color = color;
+		game->txt.count++;
 	}
 }
 
@@ -70,21 +70,21 @@ int	rgb_check(t_game *game, char *line, int i)
 
 void	check_rgb(t_game *game)
 {
-	if (game->texture.r < 0 || game->texture.r > 255)
+	if (game->txt.r < 0 || game->txt.r > 255)
 	{
 		free(game->line_save);
 		free_ressource(game);
 		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, bad input RGB detected !\n", 2);
 		exit(0);
 	}
-	if (game->texture.g < 0 || game->texture.g > 255)
+	if (game->txt.g < 0 || game->txt.g > 255)
 	{
 		free(game->line_save);
 		free_ressource(game);
 		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, bad input RGB detected !\n", 2);
 		exit(0);
 	}
-	if (game->texture.b < 0 || game->texture.b > 255)
+	if (game->txt.b < 0 || game->txt.b > 255)
 	{
 		free(game->line_save);
 		free_ressource(game);

@@ -70,10 +70,10 @@ typedef struct s_texture
 	int		b;
 	int		count;
 	int		count_player;
-	t_wall 	*north;
-	t_wall	*south;
-	t_wall	*east;
-	t_wall	*west;
+	t_wall 	*n;
+	t_wall	*s;
+	t_wall	*e;
+	t_wall	*w;
 	int		ground_color;
 	char	*line_save;
 	int		roof_color;
@@ -150,7 +150,7 @@ typedef struct s_game
 	char		*line_save;
 	int			fd;
 	t_map		map;
-	t_texture	texture;
+	t_texture	txt;
 } t_game;
 
 
