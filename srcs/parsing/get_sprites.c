@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_sprites.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:17:06 by sjossain          #+#    #+#             */
-/*   Updated: 2025/03/17 18:12:20 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/18 15:23:58 by sjossain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	find_index(char *line, char *str)
 	save = j;
 	while (line[j])
 	{
-		if (line[j] != ' ')
+		if (line[j] != ' ' && line[j] != '\t')
 			return (save + 1);
 		j++;
 	}
@@ -47,7 +47,7 @@ void	check_xpm(t_game *game, char *line, int start, int end)
 	char		file_xpm[max];
 
 	fd = -1;
-	ft_strlcpy(file_xpm, (line + start), max - 1);
+	ft_strlcpy(file_xpm, (line + start), max);
 	fd = open(file_xpm, O_RDONLY);
 	if (fd < 0)
 	{
@@ -73,9 +73,27 @@ void	check_is_fail(t_game *game, char *str)
 	}
 }
 
+void	edit_path_set(t_game *game, char **set_graph, char *file_xpm)
+{
+	char	*tmp;
+
+	tmp = ft_strdup(file_xpm);
+	if (!tmp)
+	{
+		free(file_xpm);
+		free_ressource(game);
+		ft_putstr_fd("\033[0;31mError\033[0m: Fail malloc\n", 2);
+		exit(0);
+	}
+	*set_graph = ft_strjoin("./", tmp);
+	check_is_fail(game, *set_graph);
+	game->txt.count++;
+	free(tmp);
+}
+
 void	alloc_graph_set(t_game *game, char *file_xpm, char *set_graph)
 {
-	if (game->texture.count == 4)
+	if (game->txt.count == 4)
 	{
 		free(game->line_save);
 		free_ressource(game);
@@ -84,28 +102,13 @@ void	alloc_graph_set(t_game *game, char *file_xpm, char *set_graph)
 		exit(0);
 	}
 	if (!ft_strcmp(set_graph,"NO"))
-	{
-		game->texture.north->c = ft_strdup(file_xpm);
-		check_is_fail(game, game->texture.north->c);
-		game->texture.count++;
-	}
+		edit_path_set(game, &game->txt.n->c, file_xpm);
 	if (!ft_strcmp(set_graph,"SO"))
-	{
-		game->texture.south->c = ft_strdup(file_xpm);
-		check_is_fail(game, game->texture.south->c);
-		game->texture.count++;
+		edit_path_set(game, &game->txt.s->c, file_xpm);
 
-	}
 	if (!ft_strcmp(set_graph,"WE"))
-	{
-		game->texture.west->c = ft_strdup(file_xpm);
-		check_is_fail(game, game->texture.west->c);
-		game->texture.count++;
-
-	}
+		edit_path_set(game, &game->txt.w->c, file_xpm);
 	if (ft_strcmp(set_graph,"EA"))
 		return ;
-	game->texture.east->c = ft_strdup(file_xpm);
-	check_is_fail(game, game->texture.east->c);
-	game->texture.count++;
+	edit_path_set(game, &game->txt.e->c, file_xpm);
 }

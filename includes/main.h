@@ -65,19 +65,19 @@ typedef struct s_wall
 
 typedef struct s_texture
 {
-	int		r;
-	int		g;
-	int		b;
-	int		count;
-	int		count_player;
-	t_wall 	*north;
-	t_wall	*south;
-	t_wall	*east;
-	t_wall	*west;
-	int		ground_color;
-	char	*line_save;
-	int		roof_color;
-}	t_texture;
+    int        r;
+    int        g;
+    int        b;
+    int        count;
+    int        count_player;
+    t_wall     *n;
+    t_wall    *s;
+    t_wall    *e;
+    t_wall    *w;
+    int        ground_color;
+    char    *line_save;
+    int        roof_color;
+}    t_texture;
 
 typedef struct s_map
 {
@@ -146,11 +146,11 @@ typedef struct s_window
 
 typedef struct s_game
 {
-	t_player plr;
-	char		*line_save;
-	int			fd;
-	t_map		map;
-	t_texture	texture;
+    t_player plr;
+    char        *line_save;
+    int            fd;
+    t_map        map;
+    t_texture    txt;
 } t_game;
 
 

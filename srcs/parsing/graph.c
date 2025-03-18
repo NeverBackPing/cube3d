@@ -35,11 +35,11 @@ void	store_path_fd(t_game *game, char *line, char *set_graph)
 	start = i;
 	while (line[i] && line[i] != ' ' && !escape_sequences(line[i]))
 		i++;
-	end = i + 1;
+	end = i;
 	check_xpm(game, line, start, end);
 	max = end - start;
-	file_xpm = malloc((max + 2) * sizeof(char));
-	ft_strlcpy(file_xpm, (line + start), end);
+	file_xpm = malloc((max + 1) * sizeof(char));
+	ft_strlcpy(file_xpm, (line + start), max);
 	alloc_graph_set(game, file_xpm, set_graph);
 	free(file_xpm);
 }
@@ -72,7 +72,7 @@ void	store_rgb(t_game *game, char *line, char *set_graph)
 	int	i;
 
 	i = 0;
-	if (game->texture.count == 6)
+	if (game->txt.count == 6)
 	{
 		free(game->line_save);
 		free_ressource(game);
@@ -82,13 +82,13 @@ void	store_rgb(t_game *game, char *line, char *set_graph)
 	}
 	check_sep(game, line);
 	i = skip_spaces(line, i);
-	game->texture.r = rgb_check(game, line, i);
+	game->txt.r = rgb_check(game, line, i);
 	i = skip_sep(line, i);
 	i = skip_spaces(line, i);
-	game->texture.g = rgb_check(game, line, i);
+	game->txt.g = rgb_check(game, line, i);
 	i = skip_sep(line, i);
 	i = skip_spaces(line, i);
-	game->texture.b = rgb_check(game, line, i);
+	game->txt.b = rgb_check(game, line, i);
 	check_rgb(game);
 	set_color(game, set_graph);
 }
@@ -157,7 +157,7 @@ void	get_set_graph(t_game *game, char *filename)
 	char	*line;
 
 	open_fd(game, filename);
-	while (1 && game->texture.count != 6)
+	while (1 && game->txt.count != 6)
 	{
 		line = get_next_line(game->fd);
 		if (!line)
@@ -171,7 +171,7 @@ void	get_set_graph(t_game *game, char *filename)
 			free(line);
 		line = NULL;
 	}
-	if (game->texture.count !=  GRAPH_CHECK)
+	if (game->txt.count !=  GRAPH_CHECK)
 	{
 		free_ressource(game);
 		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong \

@@ -6,7 +6,7 @@
 /*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:17:21 by sjossain          #+#    #+#             */
-/*   Updated: 2025/03/04 11:01:40 by sjossain         ###   ########.fr       */
+/*   Updated: 2025/03/18 15:21:42 by sjossain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	count_player(t_game *game, char *line)
 	if (ft_strstr(line, "N") || ft_strstr(line, "S") ||\
 			ft_strstr(line, "E") || ft_strstr(line, "W"))
 	{
-		game->texture.count_player++;
-		if (game->texture.count_player > 1)
+		game->txt.count_player++;
+		if (game->txt.count_player > 1)
 		{
 			free(line);
 			free_ressource(game);
@@ -53,7 +53,7 @@ void	count_len_map(t_game *game, char *line)
 
 void	error_detect(t_game *game)
 {
-	if (game->texture.count_player != 1)
+	if (game->txt.count_player != 1)
 	{
 		free_ressource(game);
 		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, no player find or bad config file.cub!\n", 2);

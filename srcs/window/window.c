@@ -366,42 +366,42 @@ t_wall *ft_get_texture(t_game *game, t_ray *r)
     if (r->side == 1)
     {
         if (r->rayDir.y < 0)
-            return game->texture.north;
+            return game->txt.n;
         else
-            return game->texture.south;
+            return game->txt.s;
     }
     else
     {
         if (r->rayDir.x < 0)
-            return game->texture.west;
+            return game->txt.w;
         else
-            return game->texture.east;
+            return game->txt.e;
     }
 }
 
 void load_textures(t_env *env, t_game *game, t_window *win)
 {
-    free(game->texture.south->c);
-    game->texture.south->c = ft_strdup("./sprites/image2.xpm");
-    free(game->texture.north->c);
-    game->texture.north->c = ft_strdup("./sprites/image2.xpm");
-    free(game->texture.west->c);
-    game->texture.west->c = ft_strdup("./sprites/image2.xpm");
-    free(game->texture.east->c);
-    game->texture.east->c = ft_strdup("./sprites/image2.xpm");
-    game->texture.north->img = mlx_xpm_file_to_image(win->mlx, game->texture.north->c, &game->texture.north->width, &game->texture.north->height);
-    if (game->texture.north->img)
-        game->texture.north->p = mlx_get_data_addr(game->texture.north->img, &game->texture.north->bpp, &game->texture.north->size_line, &game->texture.north->endian);
-    game->texture.south->img = mlx_xpm_file_to_image(win->mlx, game->texture.south->c, &game->texture.south->width, &game->texture.south->height);
-    if (game->texture.south->img)
-        game->texture.south->p = mlx_get_data_addr(game->texture.south->img, &game->texture.south->bpp, &game->texture.south->size_line, &game->texture.south->endian);
-    game->texture.east->img = mlx_xpm_file_to_image(win->mlx, game->texture.east->c, &game->texture.east->width, &game->texture.east->height);
-    if (game->texture.east->img)
-        game->texture.east->p = mlx_get_data_addr(game->texture.east->img, &game->texture.east->bpp, &game->texture.east->size_line, &game->texture.east->endian);
-    game->texture.west->img = mlx_xpm_file_to_image(win->mlx, game->texture.west->c, &game->texture.west->width, &game->texture.west->height);
-    if (game->texture.west->img)
-        game->texture.west->p = mlx_get_data_addr(game->texture.west->img, &game->texture.west->bpp, &game->texture.west->size_line, &game->texture.west->endian);
-    if (!game->texture.north->img || !game->texture.south->img || !game->texture.east->img || !game->texture.west->img)
+    free(game->txt.s->c);
+    game->txt.s->c = ft_strdup("./sprites/image2.xpm");
+    free(game->txt.n->c);
+    game->txt.n->c = ft_strdup("./sprites/image2.xpm");
+    free(game->txt.w->c);
+    game->txt.w->c = ft_strdup("./sprites/image2.xpm");
+    free(game->txt.e->c);
+    game->txt.e->c = ft_strdup("./sprites/image2.xpm");
+    game->txt.n->img = mlx_xpm_file_to_image(win->mlx, game->txt.n->c, &game->txt.n->width, &game->txt.n->height);
+    if (game->txt.n->img)
+        game->txt.n->p = mlx_get_data_addr(game->txt.n->img, &game->txt.n->bpp, &game->txt.n->size_line, &game->txt.n->endian);
+    game->txt.s->img = mlx_xpm_file_to_image(win->mlx, game->txt.s->c, &game->txt.s->width, &game->txt.s->height);
+    if (game->txt.s->img)
+        game->txt.s->p = mlx_get_data_addr(game->txt.s->img, &game->txt.s->bpp, &game->txt.s->size_line, &game->txt.s->endian);
+    game->txt.e->img = mlx_xpm_file_to_image(win->mlx, game->txt.e->c, &game->txt.e->width, &game->txt.e->height);
+    if (game->txt.e->img)
+        game->txt.e->p = mlx_get_data_addr(game->txt.e->img, &game->txt.e->bpp, &game->txt.e->size_line, &game->txt.e->endian);
+    game->txt.w->img = mlx_xpm_file_to_image(win->mlx, game->txt.w->c, &game->txt.w->width, &game->txt.w->height);
+    if (game->txt.w->img)
+        game->txt.w->p = mlx_get_data_addr(game->txt.w->img, &game->txt.w->bpp, &game->txt.w->size_line, &game->txt.w->endian);
+    if (!game->txt.n->img || !game->txt.s->img || !game->txt.e->img || !game->txt.w->img)
     {
         printf("Error: Failed to load textures\n");
         close_window(env);
@@ -411,14 +411,14 @@ void load_textures(t_env *env, t_game *game, t_window *win)
 
 void ft_free_textures(t_game *game, t_window *win)
 {
-    if (game->texture.north->img)
-        	mlx_destroy_image(win->mlx, game->texture.north->img);
-    if (game->texture.south->img)
-       		mlx_destroy_image(win->mlx, game->texture.south->img);
-    if (game->texture.east->img)
-        	mlx_destroy_image(win->mlx, game->texture.east->img);
-    if (game->texture.west->img)
-    		mlx_destroy_image(win->mlx, game->texture.west->img);
+    if (game->txt.n->img)
+        	mlx_destroy_image(win->mlx, game->txt.n->img);
+    if (game->txt.s->img)
+       		mlx_destroy_image(win->mlx, game->txt.s->img);
+    if (game->txt.e->img)
+        	mlx_destroy_image(win->mlx, game->txt.e->img);
+    if (game->txt.w->img)
+    		mlx_destroy_image(win->mlx, game->txt.w->img);
 }
 
 
