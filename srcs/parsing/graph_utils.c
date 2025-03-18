@@ -29,8 +29,7 @@ void	check_sep(t_game *game, char *line)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
-			bad input RGB detected !\n", 2);
+		print_error("\033[0;31mError\033[0m: Sorry, bad input RGB detected\n");
 		exit(0);
 	}
 }

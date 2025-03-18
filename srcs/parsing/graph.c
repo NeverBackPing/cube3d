@@ -50,8 +50,7 @@ void	store_rgb(t_game *game, char *line, char *set_graph)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, too many \
-			graphics setting detected !\n", 2);
+		print_error("\033[0;31mError\033[0m: too many setting detected\n");
 		exit(0);
 	}
 	check_sep(game, line);
@@ -76,8 +75,7 @@ void	check_set_graph(t_game *game, char *line, char *set_graph)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong \
-			graphics setting detected !\n", 2);
+		print_error("\033[0;31mError\033[0m: too many setting detected\n");
 		exit(0);
 	}
 	if (ft_strstr(line, "NO"))
@@ -142,8 +140,7 @@ void	get_set_graph(t_game *game, char *filename)
 	if (game->txt.count != GRAPH_CHECK)
 	{
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong \
-			graphics setting detected!\n", 2);
+		print_error("\033[0;31mError\033[0m: Bad graphics setting detected!\n");
 		exit(0);
 	}
 }

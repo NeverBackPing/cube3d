@@ -19,7 +19,7 @@ int	main(int ac, char **av)
 	init_struct(&game);
 	if (ac != 2)
 		handler_argument(ac);
-	handler_fd(av[1]);
+	handler_fd(&game, av[1]);
 	get_set_graph(&game, av[1]);
 	get_lenght_map(&game);
 	map_init(&game);
