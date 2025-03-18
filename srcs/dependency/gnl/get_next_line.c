@@ -81,6 +81,16 @@ int	is_end(char *buffer)
 	return (result);
 }
 
+bool	check_gnl(char **stash, char *buffer, int fd)
+{
+	*stash = malloc(1);
+	if (!*stash)
+		return (true);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (buffer[0] = '\0', free(stash), true);
+	return (false);
+}
+
 char	*get_next_line(int fd)
 {
 	static char		buffer[BUFFER_SIZE];
@@ -88,9 +98,8 @@ char	*get_next_line(int fd)
 	char			*line;
 	int				read_b;
 
-	stash = malloc(1);
-	if (fd < 0 || BUFFER_SIZE <= 0 || !stash)
-		return (buffer[0] = '\0', free(stash), NULL);
+	if (check_gnl(&stash, buffer, fd))
+		return (NULL);
 	read_b = 1;
 	stash[0] = '\0';
 	while (read_b > 0 && is_end(stash) == 0)
