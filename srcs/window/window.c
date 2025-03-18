@@ -77,7 +77,9 @@ t_vec	ft_testpos(t_vec newpos, t_vec *pos, t_game *game)
 	t_vec pos_try;
 
 	if (game->map.map[(int)newpos.y][(int)newpos.x] != '1')
-		return newpos;
+		if(game->map.map[(int)newpos.y][(int)pos->x] != '1')
+			if(game->map.map[(int)pos->y][(int)pos->x] != '1')
+				return newpos;
 	pos_try.x = newpos.x;
 	pos_try.y = pos->y;
 	if (game->map.map[(int)pos_try.y][(int)pos_try.x] != '1')
@@ -87,7 +89,6 @@ t_vec	ft_testpos(t_vec newpos, t_vec *pos, t_game *game)
 	if (game->map.map[(int)pos_try.y][(int)pos_try.x] != '1')
 		return pos_try;
 	return *pos;
-
 }
 
 int	close_window(t_env *env)
