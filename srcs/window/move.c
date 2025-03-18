@@ -6,7 +6,7 @@
 /*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 15:56:37 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/03/18 16:19:43 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/18 19:06:44 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,6 @@ void	ft_findp(char **map, t_vec *pos)
 			{
 				pos->y = i + 0.5;
 				pos->x = j + 0.5;
-				if (map[i][j] == 'E')
-					pos->x--;
 				return ;
 			}
 			j++;
@@ -92,9 +90,9 @@ void	ft_initp(t_game *game, t_player *plr)
 	plr->dir.y = 0;
 	plr->dir.x = 0;
 	if (game->map.map[(int)plr->pos.y][(int)plr->pos.x] == 'N')
-		plr->dir.y = 1;
-	else if (game->map.map[(int)plr->pos.y][(int)plr->pos.x] == 'S')
 		plr->dir.y = -1;
+	else if (game->map.map[(int)plr->pos.y][(int)plr->pos.x] == 'S')
+		plr->dir.y = 1;
 	else if (game->map.map[(int)plr->pos.y][(int)plr->pos.x] == 'W')
 		plr->dir.x = -1;
 	else
