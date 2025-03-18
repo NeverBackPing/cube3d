@@ -26,19 +26,12 @@
 # include "../srcs/dependency/libft/libft.h"
 # include "../srcs/dependency/gnl/get_next_line.h"
 
-/* ----------------------------
-	Structure pour un vecteur 3D
----------------------------- */
 typedef struct s_vec
 {
 	double	x;
 	double	y;
 }	t_vec;
 
-
-/* ----------------------------
-	Structure pour l'image
----------------------------- */
 typedef struct s_img
 {
 	void	*img;
@@ -48,13 +41,10 @@ typedef struct s_img
 	int		endian;
 }	t_img;
 
-/* -----------------------------------------------------
-	Prototypes des fonctions MLX et hooks
------------------------------------------------------ */
 typedef struct s_wall
 {
-	char 	*c;
-	void 	*p;
+	char	*c;
+	void	*p;
 	int		height;
 	int		width;
 	void	*img;
@@ -65,19 +55,19 @@ typedef struct s_wall
 
 typedef struct s_texture
 {
-    int        r;
-    int        g;
-    int        b;
-    int        count;
-    int        count_player;
-    t_wall     *n;
-    t_wall    *s;
-    t_wall    *e;
-    t_wall    *w;
-    int        ground_color;
-    char    *line_save;
-    int        roof_color;
-}    t_texture;
+	int		r;
+	int		g;
+	int		b;
+	int		count;
+	int		count_player;
+	t_wall	*n;
+	t_wall	*s;
+	t_wall	*e;
+	t_wall	*w;
+	int		ground_color;
+	char	*line_save;
+	int		roof_color;
+}	t_texture;
 
 typedef struct s_map
 {
@@ -87,41 +77,38 @@ typedef struct s_map
 	int		height;
 	int		lenght_index;
 	char	**map;
-} t_map;
+}	t_map;
 
 typedef struct s_player
 {
 	t_vec	pos;
 	t_vec	dir;
 	t_vec	plane;
-} t_player;
-
-
+}	t_player;
 
 typedef struct s_ray
 {
+	int			mapx;
+	int			mapy;
+	int			stepx;
+	int			stepy;
+	int			hit;
+	int			color;
+	int			side;
+	int			lh;
+	int			ds;
+	int			de;
+	int			texx;
+	int			texy;
+	t_vec		raydir;
+	t_vec		sidedist;
+	t_vec		deltadist;
+	t_wall		*texture;
+	double		wallx;
+	double		texpos;
+	double		perpwalldist;
 
-	int	mapX;
-	int	mapY;
-	int	stepX;
-	int	stepY;
-	int	hit;
-	int	color;
-	int	side;
-	int	lh;
-	int	Ds;
-	int	De;
-	int	texX;
-	int	texY;
-	t_vec rayDir;
-	t_vec sideDist;
-	t_vec deltaDist;
-	t_wall	*texture;
-	double	wallX;
-	double	texPos;
-	double	perpWallDist;
-
-} t_ray;
+}	t_ray;
 
 typedef struct s_minimap
 {
@@ -131,76 +118,61 @@ typedef struct s_minimap
 	int	orientation_y;
 	int	start_x;
 	int	start_y;
-} t_minimap;
+}	t_minimap;
 
 typedef struct s_window
 {
-	void 		*img;
+	void		*img;
 	void		*mlx;
 	int			*win;
-	int		bpp;
-	int		size_line;
+	int			bpp;
+	int			size_line;
 	t_minimap	minimap;
-} t_window;
-
+}	t_window;
 
 typedef struct s_game
 {
-    t_player plr;
-    char        *line_save;
-    int            fd;
-    t_map        map;
-    t_texture    txt;
-} t_game;
-
+	t_player		plr;
+	char			*line_save;
+	int				fd;
+	t_map			map;
+	t_texture		txt;
+}	t_game;
 
 typedef struct s_env {
 	t_window	win;
 	t_game		game;
-	t_player	*plr;  // ou game.plr si tu préfères y accéder directement
+	t_player	*plr;
 	int			mouse;
-} t_env;
+}	t_env;
 
-// monitor/init_struct.c
 void	init_struct(t_game *game);
 void	free_ressource(t_game *game);
-// parsing/check_map.c
 void	map_is_good(t_game *game);
-// parsing/edit_map.c
 void	edit_map(t_game *game);
-// parsing/ft_get_map.c
 void	alloc_map(t_game *game, t_map *map, int lengh, char *line);
 void	get_map(t_game *game, char *filename);
 bool	just_space(char *line);
 void	start_cpy_map(t_game *game, t_map *map, char *line);
-// parsing/graph.c
 void	get_set_graph(t_game *game, char *filename);
-// parsing/graph_utils.c
 void	check_sep(t_game *game, char *line);
 void	check_fail(t_game *game);
 bool	escape_sequences(char c);
 void	set_fail(t_game *game);
-// parsing/get_sprites.c
 void	alloc_graph_set(t_game *game, char *file_xpm, char *set_graph);
 void	check_xpm(t_game *game, char *line, int start, int end);
 void	check_is_fail(t_game *game, char *str);
 int		find_index(char *line, char *str);
-// parsing/handler_fd.c
 void	close_fd(t_game *game);
 void	open_fd(t_game *game, char *filename);
-// parsing/get_rgb.c
 void	check_rgb(t_game *game);
 int		rgb_check(t_game *game, char *line, int i);
 void	set_color(t_game *game, char *set);
-// parsing/map_tool.c
 void	map_init(t_game *game);
 void	get_lenght_map(t_game *game);
-//window/minimap.c
 void	draw_minimap(t_game *game, char *data, t_window *win, int size_line);
 void	draw_tile(t_window *win, int *img_data, int color, int size_line);
-//window/color.c
 void	ft_draw_background(t_game *game, char *data, int size_line);
-//window/window.c
-int	ft_window(t_game *game);
+int		ft_window(t_game *game);
 
 #endif

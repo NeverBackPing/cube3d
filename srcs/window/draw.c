@@ -6,7 +6,7 @@
 /*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 15:53:33 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/03/18 15:58:58 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:50:41 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_draw(t_game *game, t_window *win)
 	mlx_destroy_image(win->mlx, win->img);
 }
 
-int	get_texture_color(t_ray *r, int texX, int texY)
+int	get_texture_color(t_ray *r, int texx, int texy)
 {
 	int	offset;
 
@@ -48,13 +48,13 @@ int	get_texture_color(t_ray *r, int texX, int texY)
 		printf("Error: Texture data is NULL\n");
 		return (0);
 	}
-	if (texX < 0 || texX >= r->texture->width || texY < 0
-		|| texY >= r->texture->height)
+	if (texx < 0 || texx >= r->texture->width || texy < 0
+		|| texy >= r->texture->height)
 	{
 		printf("Error: Texture coordinates out of bounds\n");
 		return (0);
 	}
-	offset = texY * r->texture->size_line + texX * (r->texture->bpp / 8);
+	offset = texy * r->texture->size_line + texx * (r->texture->bpp / 8);
 	if (offset < 0 || offset >= r->texture->size_line * r->texture->height)
 	{
 		printf("Error: Invalid offset (offset=%d)\n", offset);
@@ -71,13 +71,13 @@ void	draw_textured_wall(t_ray *r, int x, char *data, t_window *win)
 	int				offset;
 
 	step = 1.0 * r->texture->height / r->lh;
-	r->texPos = (r->Ds - SCREENY / 2 + r->lh / 2) * step;
-	y = r->Ds;
-	while (y < r->De)
+	r->texpos = (r->ds - SCREENY / 2 + r->lh / 2) * step;
+	y = r->ds;
+	while (y < r->de)
 	{
-		r->texY = (int)r->texPos & (r->texture->height - 1);
-		r->texPos += step;
-		color = get_texture_color(r, r->texX, r->texY);
+		r->texy = (int)r->texpos & (r->texture->height - 1);
+		r->texpos += step;
+		color = get_texture_color(r, r->texx, r->texy);
 		if (r->side == 1)
 			color = (color >> 1) & 8355711;
 		offset = y * win->size_line + x * (win->bpp / 8);
@@ -90,14 +90,14 @@ t_wall	*ft_get_texture(t_game *game, t_ray *r)
 {
 	if (r->side == 1)
 	{
-		if (r->rayDir.y < 0)
+		if (r->raydir.y < 0)
 			return (game->txt.n);
 		else
 			return (game->txt.s);
 	}
 	else
 	{
-		if (r->rayDir.x < 0)
+		if (r->raydir.x < 0)
 			return (game->txt.w);
 		else
 			return (game->txt.e);
