@@ -83,11 +83,7 @@ int	ft_window(t_game *game)
 	env.win.win = mlx_new_window(env.win.mlx,
 			SCREENX, SCREENY, "Cub3d Raytracing");
 	if (!env.win.win)
-	{
-		free(env.win.mlx);
-		free_ressource(game);
-		return (1);
-	}
+		return (free(env.win.mlx), 1);
 	load_textures(&env, &env.game, &env.win);
 	ft_draw(&env.game, &env.win);
 	mlx_hook(env.win.win, 17, 0, (int (*)())close_window, &env);
