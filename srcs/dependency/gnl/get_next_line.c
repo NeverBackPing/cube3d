@@ -83,11 +83,11 @@ int	is_end(char *buffer)
 
 bool	check_gnl(char **stash, char *buffer, int fd)
 {
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (buffer[0] = '\0', free(stash), true);
 	*stash = malloc(1);
 	if (!*stash)
 		return (true);
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (buffer[0] = '\0', free(stash), true);
 	return (false);
 }
 
