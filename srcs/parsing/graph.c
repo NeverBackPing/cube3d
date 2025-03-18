@@ -35,11 +35,11 @@ void	store_path_fd(t_game *game, char *line, char *set_graph)
 	start = i;
 	while (line[i] && line[i] != ' ' && !escape_sequences(line[i]))
 		i++;
-	end = i + 1;
+	end = i;
 	check_xpm(game, line, start, end);
 	max = end - start;
-	file_xpm = malloc((max + 2) * sizeof(char));
-	ft_strlcpy(file_xpm, (line + start), end);
+	file_xpm = malloc((max + 1) * sizeof(char));
+	ft_strlcpy(file_xpm, (line + start), max);
 	alloc_graph_set(game, file_xpm, set_graph);
 	free(file_xpm);
 }

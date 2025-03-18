@@ -14,7 +14,7 @@
 
 bool	escape_sequences(char c)
 {
-	if (c == '\n' || c == '\r'/* || c == '\t' */)
+	if (c == '\n' || c == '\r')
 		return (true);
 	return (false);
 }

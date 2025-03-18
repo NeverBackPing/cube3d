@@ -488,4 +488,3 @@ int	ft_window(t_game *game)
 	mlx_loop(env.win.mlx);
 	return (0);
 }
-
