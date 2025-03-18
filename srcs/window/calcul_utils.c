@@ -6,7 +6,7 @@
 /*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 15:51:29 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/03/18 15:59:07 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:51:11 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@
 void	calculate_wallx(t_ray *r, t_player *plr)
 {
 	if (r->side == 0)
-		r->wallX = plr->pos.y + r->perpWallDist * r->rayDir.y;
+		r->wallx = plr->pos.y + r->perpwalldist * r->raydir.y;
 	else
-		r->wallX = plr->pos.x + r->perpWallDist * r->rayDir.x;
-	r->wallX -= floor(r->wallX);
+		r->wallx = plr->pos.x + r->perpwalldist * r->raydir.x;
+	r->wallx -= floor(r->wallx);
 }
 
 void	calculate_texx(t_ray *r, int texWidth)
 {
-	r->texX = (int)(r->wallX * (double)texWidth);
-	if (r->side == 0 && r->rayDir.x > 0)
-		r->texX = texWidth - r->texX - 1;
-	if (r->side == 1 && r->rayDir.y < 0)
-		r->texX = texWidth - r->texX - 1;
+	r->texx = (int)(r->wallx * (double)texWidth);
+	if (r->side == 0 && r->raydir.x > 0)
+		r->texx = texWidth - r->texx - 1;
+	if (r->side == 1 && r->raydir.y < 0)
+		r->texx = texWidth - r->texx - 1;
 }
 
 int	ft_tablen(char **tab)
@@ -43,18 +43,18 @@ int	ft_tablen(char **tab)
 
 void	ft_setposmap(t_ray *r)
 {
-	r->mapX = (int)r->rayDir.x;
-	r->mapY = (int)r->rayDir.y;
+	r->mapx = (int)r->raydir.x;
+	r->mapy = (int)r->raydir.y;
 }
 
 void	ft_setdelta(t_ray *r)
 {
-	if (r->rayDir.x == 0)
-		r->deltaDist.x = 1e30;
+	if (r->raydir.x == 0)
+		r->deltadist.x = 1e30;
 	else
-		r->deltaDist.x = fabs(1 / r->rayDir.x);
-	if (r->rayDir.y == 0)
-		r->deltaDist.y = 1e30;
+		r->deltadist.x = fabs(1 / r->raydir.x);
+	if (r->raydir.y == 0)
+		r->deltadist.y = 1e30;
 	else
-		r->deltaDist.y = fabs(1 / r->rayDir.y);
+		r->deltadist.y = fabs(1 / r->raydir.y);
 }

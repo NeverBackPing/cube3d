@@ -6,7 +6,7 @@
 /*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 15:50:18 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/03/18 16:55:53 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:51:11 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,25 @@
 
 void	ft_setsidedist(t_ray *r, double posX, double posY)
 {
-	if (r->rayDir.x < 0)
+	if (r->raydir.x < 0)
 	{
-		r->stepX = -1;
-		r->sideDist.x = (posX - r->mapX) * r->deltaDist.x;
+		r->stepx = -1;
+		r->sidedist.x = (posX - r->mapx) * r->deltadist.x;
 	}
 	else
 	{
-		r->stepX = 1;
-		r->sideDist.x = (r->mapX + 1.0 - posX) * r->deltaDist.x;
+		r->stepx = 1;
+		r->sidedist.x = (r->mapx + 1.0 - posX) * r->deltadist.x;
 	}
-	if (r->rayDir.y < 0)
+	if (r->raydir.y < 0)
 	{
-		r->stepY = -1;
-		r->sideDist.y = (posY - r->mapY) * r->deltaDist.y;
+		r->stepy = -1;
+		r->sidedist.y = (posY - r->mapy) * r->deltadist.y;
 	}
 	else
 	{
-		r->stepY = 1;
-		r->sideDist.y = (r->mapY + 1.0 - posY) * r->deltaDist.y;
+		r->stepy = 1;
+		r->sidedist.y = (r->mapy + 1.0 - posY) * r->deltadist.y;
 	}
 }
 
@@ -41,28 +41,28 @@ void	ft_testhit(t_ray *r, t_game *game, int hit)
 {
 	while (hit == 0)
 	{
-		if (r->sideDist.x < r->sideDist.y)
+		if (r->sidedist.x < r->sidedist.y)
 		{
-			r->sideDist.x += r->deltaDist.x;
-			r->mapX += r->stepX;
+			r->sidedist.x += r->deltadist.x;
+			r->mapx += r->stepx;
 			r->side = 0;
 		}
 		else
 		{
-			r->sideDist.y += r->deltaDist.y;
-			r->mapY += r->stepY;
+			r->sidedist.y += r->deltadist.y;
+			r->mapy += r->stepy;
 			r->side = 1;
 		}
-		if (r->mapY < 0 || r->mapY >= ft_tablen(game->map.map)
-			|| r->mapX < 0 || r->mapX >= ft_strlen(game->map.map[r->mapY]))
+		if (r->mapy < 0 || r->mapy >= ft_tablen(game->map.map)
+			|| r->mapx < 0 || r->mapx >= ft_strlen(game->map.map[r->mapy]))
 				hit = 1;
-		if (game->map.map[r->mapY][r->mapX] == '1')
+		if (game->map.map[r->mapy][r->mapx] == '1')
 			hit = 1;
 	}
 	if (r->side == 0)
-		r->perpWallDist = r->sideDist.x - r->deltaDist.x;
+		r->perpwalldist = r->sidedist.x - r->deltadist.x;
 	else
-		r->perpWallDist = r->sideDist.y - r->deltaDist.y;
+		r->perpwalldist = r->sidedist.y - r->deltadist.y;
 }
 
 t_vec	ft_onecol(int x, t_player plr)
@@ -78,19 +78,19 @@ t_vec	ft_onecol(int x, t_player plr)
 
 void	ft_init_ray(t_ray *r, t_game *game, int x)
 {
-	r->rayDir = ft_onecol(x, game->plr);
-	r->mapX = (int)game->plr.pos.x;
-	r->mapY = (int)game->plr.pos.y;
+	r->raydir = ft_onecol(x, game->plr);
+	r->mapx = (int)game->plr.pos.x;
+	r->mapy = (int)game->plr.pos.y;
 	ft_setdelta(r);
 	ft_setsidedist(r, game->plr.pos.x, game->plr.pos.y);
 	ft_testhit(r, game, 0);
-	r->lh = (int)(SCREENY / r->perpWallDist);
-	r->Ds = -r->lh / 2 + SCREENY / 2;
-	if (r->Ds < 0)
-		r->Ds = 0;
-	r->De = r->lh / 2 + SCREENY / 2;
-	if (r->De >= SCREENY)
-		r->De = SCREENY - 1;
+	r->lh = (int)(SCREENY / r->perpwalldist);
+	r->ds = -r->lh / 2 + SCREENY / 2;
+	if (r->ds < 0)
+		r->ds = 0;
+	r->de = r->lh / 2 + SCREENY / 2;
+	if (r->de >= SCREENY)
+		r->de = SCREENY - 1;
 	r->texture = ft_get_texture(game, r);
 }
 
