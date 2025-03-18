@@ -48,7 +48,7 @@ void	load_textures(t_env *env, t_game *game, t_window *win)
 				&game->txt.w->size_line, &game->txt.w->endian);
 	if (!game->txt.n->img || !game->txt.s->img
 		|| !game->txt.e->img || !game->txt.w->img)
-		return (printf("Error: Failed to load textures\n"),
+		return (print_error("Error\nFailed to load textures\n"),
 			close_window(env), (void)env);
 }
 

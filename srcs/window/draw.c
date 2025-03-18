@@ -6,7 +6,7 @@
 /*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 15:53:33 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/03/18 17:50:41 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/18 19:24:13 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,24 @@ int	get_texture_color(t_ray *r, int texx, int texy)
 
 	if (!r->texture)
 	{
-		printf("Error: Texture is NULL\n");
+		print_error("Error\nTexture is NULL\n");
 		return (0);
 	}
 	if (!r->texture->p)
 	{
-		printf("Error: Texture data is NULL\n");
+		print_error("Error\nTexture data is NULL\n");
 		return (0);
 	}
 	if (texx < 0 || texx >= r->texture->width || texy < 0
 		|| texy >= r->texture->height)
 	{
-		printf("Error: Texture coordinates out of bounds\n");
+		print_error("Error\nTexture coordinates out of bounds\n");
 		return (0);
 	}
 	offset = texy * r->texture->size_line + texx * (r->texture->bpp / 8);
 	if (offset < 0 || offset >= r->texture->size_line * r->texture->height)
 	{
-		printf("Error: Invalid offset (offset=%d)\n", offset);
+		print_error("Error\nInvalid offset\n");
 		return (0);
 	}
 	return (*(int *)(r->texture->p + offset));
