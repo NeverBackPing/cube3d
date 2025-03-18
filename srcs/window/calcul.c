@@ -6,7 +6,7 @@
 /*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 15:50:18 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/03/18 15:58:26 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:55:53 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_testhit(t_ray *r, t_game *game, int hit)
 			r->side = 1;
 		}
 		if (r->mapY < 0 || r->mapY >= ft_tablen(game->map.map)
-			|| r->mapX < 0 || r->mapX >= (int)ft_strlen(game->map.map[r->mapY]))
+			|| r->mapX < 0 || r->mapX >= ft_strlen(game->map.map[r->mapY]))
 				hit = 1;
 		if (game->map.map[r->mapY][r->mapX] == '1')
 			hit = 1;

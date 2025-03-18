@@ -26,7 +26,7 @@ char	*check_str(char *buf)
 	return (token);
 }
 
-int	return_error(char *buf, char *token, size_t pos)
+int	return_error(char *buf, char *token, int pos)
 {
 	if (!buf || !token)
 		return (1);
@@ -55,7 +55,7 @@ void	change_delim(char *buf, size_t pos)
 char	*ft_strtok(char *str, const char delimiter)
 {
 	int				i;
-	static size_t	pos = 0;
+	static int		pos = 0;
 	static char		*buf;
 	static char		*token;
 

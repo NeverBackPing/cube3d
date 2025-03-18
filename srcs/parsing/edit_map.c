@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   edit_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:55:13 by sjossain          #+#    #+#             */
-/*   Updated: 2025/03/17 16:06:58 by sjossain         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:55:49 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	edit_with_space(t_game *game, char *str, t_map *map, int i)
 
 	j = 0;
 	k = 0;
-	if ((int)ft_strlen(map->map[i]) < game->map.row)
+	if (ft_strlen(map->map[i]) < game->map.row)
 	{
 		free(map->map[i]);
 		map->map[i] = malloc((game->map.row + 1) * sizeof(char *));

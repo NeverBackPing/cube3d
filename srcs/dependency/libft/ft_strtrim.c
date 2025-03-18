@@ -12,9 +12,9 @@
 
 #include "libft.h"
 
-size_t	check_is_set(char c, const char *set)
+int	check_is_set(char c, const char *set)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (set[i] != '\0')
@@ -28,9 +28,9 @@ size_t	check_is_set(char c, const char *set)
 	return (0);
 }
 
-size_t	first_cara(const char *str, char const *set)
+int	first_cara(const char *str, char const *set)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (check_is_set(str[i], set))
@@ -38,9 +38,9 @@ size_t	first_cara(const char *str, char const *set)
 	return (i);
 }
 
-size_t	last_cara(const char *str, char const *set)
+int	last_cara(const char *str, char const *set)
 {
-	size_t	i;
+	int	i;
 
 	i = ft_strlen(str) - 1;
 	while (check_is_set(str[i], set))
@@ -48,7 +48,7 @@ size_t	last_cara(const char *str, char const *set)
 	return (i);
 }
 
-size_t	len_without_set(char const *str, char const *set)
+int	len_without_set(char const *str, char const *set)
 {
 	return (last_cara(str, set) - first_cara(str, set));
 }
@@ -56,8 +56,8 @@ size_t	len_without_set(char const *str, char const *set)
 char	*ft_strtrim(char const *s1, char const *set)
 {
 	char	*dest;
-	size_t	i;
-	size_t	dest_len;
+	int		i;
+	int		dest_len;
 
 	i = 0;
 	dest_len = len_without_set(s1, set) + 1;

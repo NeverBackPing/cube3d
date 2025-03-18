@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   checkmap.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:23:07 by gtraiman          #+#    #+#             */
-/*   Updated: 2025/03/04 12:19:11 by sjossain         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:58:35 by gtraiman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/checkmap.h"
+#include "../window/window.h"
 
 int	ft_cins(char *str, char c)
 {
@@ -23,59 +24,66 @@ int	ft_cins(char *str, char c)
 	return (0);
 }
 
-int checkmap(char **tab)
+int	ft_whilemap(char **tab, int i, int j, int *cpt)
 {
-    int i;
-    int j;
-    int cpt;
-
-    i = 0;
-    j = 0;
-    cpt = 0;
-    while(tab[i][j])
-    {
-        if(ft_cins("1 ",tab[i][j]) != 1)
-            return(1);
-        j++;
-    }
-    i++;
-    while(tab[i + 1])
-    {
-        if(tab[i][0] == '0')
-            return(1);
-        j = 1;
-        while(tab[i][j])
-        {
-            if(ft_cins("0NEWS",tab[i][j]) == 1)
-            {
-                if(tab[i][j] != '0')
-                    cpt++;
-                if(((int)ft_strlen(tab[i - 1]) < j || (int)ft_strlen(tab[i + 1]) < j))
-                    return(1);
-                if(ft_cins("0NEWS1",tab[i - 1][j]) == 0 || ft_cins("0NEWS1",tab[i + 1][j]) == 0)
-                    return(1);
-                if((j != 0 && ft_cins("0NEWS1",tab[i][j - 1]) == 0) || ft_cins("0NEWS1",tab[i][j + 1]) == 0)
-                    return(1);
-            }
-            j++;
-        }
-        i++;
-    }
-    j = 0;
-    while(tab[i][j])
-    {
-        if(ft_cins("1 ",tab[i][j]) != 1)
-            return(1);
-        j++;
-    }
-    if(cpt != 1)
-        return(1);
-    return(0);
+	while (tab[i + 1])
+	{
+		if (tab[i][0] == '0')
+			return (-1);
+		j = 1;
+		while (tab[i][j])
+		{
+			if (ft_cins("0NEWS", tab[i][j]) == 1)
+			{
+				if (tab[i][j] != '0')
+					(*cpt)++;
+				if (ft_strlen(tab[i - 1]) < j || ft_strlen(tab[i + 1]) < j)
+					return (-1);
+				if (ft_cins("0NEWS1", tab[i - 1][j]) == 0
+					|| ft_cins("0NEWS1", tab[i + 1][j]) == 0)
+					return (-1);
+				if ((j != 0 && ft_cins("0NEWS1", tab[i][j - 1]) == 0)
+					|| ft_cins("0NEWS1", tab[i][j + 1]) == 0)
+					return (-1);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (i);
 }
 
-void    map_is_good(t_game *game)
+int	checkmap(char **tab)
 {
-    if (checkmap(game->map.map))
+	int	i;
+	int	j;
+	int	cpt;
+
+	i = 0;
+	j = 0;
+	cpt = 0;
+	while (tab[i][j])
+	{
+		if (ft_cins(NEXTO1, tab[i][j]) != 1)
+			return (1);
+		j++;
+	}
+	i = ft_whilemap(tab, i + 1, j, &cpt);
+	if (i == -1 || cpt != 1)
+		return (1);
+	j = 0;
+	while (tab[i][j])
+	{
+		if (ft_cins(NEXTO1, tab[i][j]) != 1)
+			return (1);
+		j++;
+	}
+	return (0);
+}
+
+void	map_is_good(t_game *game)
+{
+	if (checkmap(game->map.map))
 	{
 		ft_putstr_fd("\033[0;31mError\033[0m: Bad config in map detected!\n", 2);
 		free_ressource(game);

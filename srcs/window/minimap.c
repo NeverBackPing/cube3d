@@ -106,7 +106,7 @@ void	draw_minimap(t_game *game, char *data, t_window *win, int size_line)
 	while (y < ft_tablen(game->map.map))
 	{
 		x = 0;
-		while (x < (int)ft_strlen(game->map.map[y]))
+		while (x < ft_strlen(game->map.map[y]))
 		{
 			if (game->map.map[y][x] == '1' || game->map.map[y][x] == ' ')
 				color = 0x000000;
