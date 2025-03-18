@@ -20,8 +20,6 @@
 // checkmap.c
 int		checkmap(char **tab);
 int		ft_cins(char *str, char c);
-// handler_fd.c
-void	handler_fd(char	*fd);
 // handler_input.c
 void	handler_argument(int ac);
 // graph_utils.c

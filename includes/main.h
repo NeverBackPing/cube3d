@@ -149,6 +149,8 @@ typedef struct s_env {
 // monitor/error.c
 void	print_error(char *str);
 // monitor/init_struct.c
+// handler_fd.c
+void	handler_fd(t_game *game, char	*fd);
 void	init_struct(t_game *game);
 void	free_ressource(t_game *game);
 void	map_is_good(t_game *game);
