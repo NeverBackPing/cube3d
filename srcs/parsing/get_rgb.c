@@ -20,12 +20,12 @@ void	set_color(t_game *game, char *set)
 	if (!ft_strcmp(set, "F"))
 	{
 		game->txt.roof_color = color;
-		game->txt.count++;
+		game->txt.count_f = 1;
 	}
 	if (!ft_strcmp(set, "C"))
 	{
 		game->txt.ground_color = color;
-		game->txt.count++;
+		game->txt.count_c = 1;
 	}
 }
 

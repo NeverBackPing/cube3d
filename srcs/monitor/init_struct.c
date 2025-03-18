@@ -20,6 +20,18 @@ void	init_null_str(t_game *game)
 	game->txt.w->c = NULL;
 }
 
+void	init_count(t_game *game)
+{
+	game->txt.count = 0;
+	game->txt.count_c = 0;
+	game->txt.count_e = 0;
+	game->txt.count_f = 0;
+	game->txt.count_n = 0;
+	game->txt.count_player = 0;
+	game->txt.count_s = 0;
+	game->txt.count_w = 0;
+}
+
 void	init_struct(t_game *game)
 {
 	game->fd = -1;
@@ -31,8 +43,7 @@ void	init_struct(t_game *game)
 	game->txt.r = -1;
 	game->txt.g = -1;
 	game->txt.b = -1;
-	game->txt.count = 0;
-	game->txt.count_player = 0;
+	init_count(game);
 	game->txt.roof_color = -1;
 	game->txt.ground_color = -1;
 	game->txt.e = malloc(sizeof(t_wall));
@@ -45,49 +56,4 @@ void	init_struct(t_game *game)
 		exit(1);
 	}
 	init_null_str(game);
-}
-
-void	init_null(t_game *game)
-{
-	game->txt.e = NULL;
-	game->txt.n = NULL;
-	game->txt.s = NULL;
-	game->txt.w = NULL;
-}
-
-void	free_ressource_prt2(t_game *game)
-{
-	if (game->txt.s)
-	{
-		if (game->txt.s->c)
-			free(game->txt.s->c);
-		free(game->txt.s);
-	}
-	if (game->txt.w)
-	{
-		if (game->txt.w->c)
-			free(game->txt.w->c);
-		free(game->txt.w);
-	}
-}
-
-void	free_ressource(t_game *game)
-{
-	close_fd(game);
-	if (game->txt.e)
-	{
-		if (game->txt.e->c)
-			free(game->txt.e->c);
-		free(game->txt.e);
-	}
-	if (game->txt.n)
-	{
-		if (game->txt.n->c)
-			free(game->txt.n->c);
-		free(game->txt.n);
-	}
-	free_ressource_prt2(game);
-	if (game->map.map)
-		dest_free(game->map.map);
-	init_null(game);
 }

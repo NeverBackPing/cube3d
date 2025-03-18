@@ -132,15 +132,14 @@ void	get_set_graph(t_game *game, char *filename)
 		{
 			if (!just_space(line))
 				set_graphique(game, line);
+			game->txt.count = game->txt.count_n + game->txt.count_s + \
+			game->txt.count_w + game->txt.count_e + game->txt.count_f + \
+			game->txt.count_c;
 		}
 		if (line)
 			free(line);
 		line = NULL;
 	}
 	if (game->txt.count != GRAPH_CHECK)
-	{
-		free_ressource(game);
-		print_error("\033[0;31mError\033[0m: Bad graphics setting detected!\n");
-		exit(0);
-	}
+		fail_count(game);
 }
