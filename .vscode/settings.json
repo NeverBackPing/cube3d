@@ -1,0 +1,10 @@
+{
+	"files.associations": {
+		"get_next_line.h": "c",
+		"main.h": "c",
+		"fcntl.h": "c",
+		"checkmap.h": "c",
+		"errno.h": "c",
+		"window.h": "c"
+	}
+}

@@ -35,7 +35,7 @@ void	open_fd(t_game *game, char *filename)
 	}
 }
 
-void	handler_fd(char	*fd)
+void	handler_fd(t_game *game, char	*fd)
 {
 	int	i;
 	int	egal;
@@ -47,6 +47,7 @@ void	handler_fd(char	*fd)
 	egal = ft_strcmp((fd + i), ".cub");
 	if (egal != 0)
 	{
+		free_ressource(game);
 		ft_putstr_fd("\033[0;31mError\033[0m: Bad file extension\n", 2);
 		exit(0);
 	}
