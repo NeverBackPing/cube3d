@@ -12,13 +12,6 @@
 
 #include "../../includes/checkmap.h"
 
-bool	escape_sequences(char c)
-{
-	if (c == '\n' || c == '\r')
-		return (true);
-	return (false);
-}
-
 void	alloc_map(t_game *game, t_map *map, int lengh, char *line)
 {
 	if (map->lenght_index < map->lenght)
@@ -56,7 +49,6 @@ void	start_cpy_map(t_game *game, t_map *map, char *line)
 	alloc_map(game, map, lengh, line);
 }
 
-
 bool	just_space(char *line)
 {
 	int	i;
@@ -64,8 +56,8 @@ bool	just_space(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ' && line[i] != '\t' &&\
-			 !escape_sequences(line[i]))
+		if (line[i] != ' ' && line[i] != '\t' && \
+			!escape_sequences(line[i]))
 			return (false);
 		i++;
 	}

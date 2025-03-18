@@ -170,12 +170,16 @@ void	map_is_good(t_game *game);
 void	edit_map(t_game *game);
 // parsing/ft_get_map.c
 void	alloc_map(t_game *game, t_map *map, int lengh, char *line);
-bool	escape_sequences(char c);
 void	get_map(t_game *game, char *filename);
 bool	just_space(char *line);
 void	start_cpy_map(t_game *game, t_map *map, char *line);
 // parsing/graph.c
 void	get_set_graph(t_game *game, char *filename);
+// parsing/graph_utils.c
+void	check_sep(t_game *game, char *line);
+void	check_fail(t_game *game);
+bool	escape_sequences(char c);
+void	set_fail(t_game *game);
 // parsing/get_sprites.c
 void	alloc_graph_set(t_game *game, char *file_xpm, char *set_graph);
 void	check_xpm(t_game *game, char *line, int start, int end);

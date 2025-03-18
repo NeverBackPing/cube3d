@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_tool.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:17:21 by sjossain          #+#    #+#             */
-/*   Updated: 2025/03/18 15:34:55 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:44:58 by sjossain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	count_player(t_game *game, char *line)
 {
-
-	if (ft_strstr(line, "N") || ft_strstr(line, "S") ||\
+	if (ft_strstr(line, "N") || ft_strstr(line, "S") || \
 			ft_strstr(line, "E") || ft_strstr(line, "W"))
 	{
 		game->txt.count_player++;
@@ -32,8 +31,8 @@ void	count_player(t_game *game, char *line)
 
 void	count_len_map(t_game *game, char *line)
 {
-	int		i;
-	char	set_map[] = "01NSEW";
+	int			i;
+	const char	set_map[] = "01NSEW";
 
 	i = 0;
 	count_player(game, line);
@@ -43,8 +42,8 @@ void	count_len_map(t_game *game, char *line)
 		{
 			free(line);
 			free_ressource(game);
-			ft_putstr_fd(\
-				"\033[0;31mError\033[0m: Sorry, bad setting in map detected!\n", 2);
+			ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
+				bad setting in map detected!\n", 2);
 			exit(0);
 		}
 		i++;
@@ -56,10 +55,12 @@ void	error_detect(t_game *game)
 	if (game->txt.count_player != 1)
 	{
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, no player find or bad config file.cub!\n", 2);
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
+			no player find or bad config file.cub!\n", 2);
 		exit(0);
 	}
 }
+
 void	get_lenght_map(t_game *game)
 {
 	char	*line;

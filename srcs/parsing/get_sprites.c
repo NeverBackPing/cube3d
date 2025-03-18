@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_sprites.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gtraiman <gtraiman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:17:06 by sjossain          #+#    #+#             */
-/*   Updated: 2025/03/18 15:34:44 by gtraiman         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:37:11 by sjossain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,13 @@ int	find_index(char *line, char *str)
 void	check_xpm(t_game *game, char *line, int start, int end)
 {
 	int			fd;
+	char		*file_xpm;
 	const int	max = end - start;
-	char		file_xpm[max];
 
 	fd = -1;
+	file_xpm = malloc((max + 1) * sizeof(char *));
+	if (!file_xpm)
+		check_fail(game);
 	ft_strlcpy(file_xpm, (line + start), max);
 	fd = open(file_xpm, O_RDONLY);
 	if (fd < 0)
@@ -58,6 +61,7 @@ void	check_xpm(t_game *game, char *line, int start, int end)
 		free_ressource(game);
 		exit(0);
 	}
+	free(file_xpm);
 	close (fd);
 	fd = -1;
 }
@@ -98,17 +102,17 @@ void	alloc_graph_set(t_game *game, char *file_xpm, char *set_graph)
 		free(game->line_save);
 		free_ressource(game);
 		free(file_xpm);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, too many graphics setting detected !\n", 2);
+		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
+			too many graphics setting detected !\n", 2);
 		exit(0);
 	}
-	if (!ft_strcmp(set_graph,"NO"))
+	if (!ft_strcmp(set_graph, "NO"))
 		edit_path_set(game, &game->txt.n->c, file_xpm);
-	if (!ft_strcmp(set_graph,"SO"))
+	if (!ft_strcmp(set_graph, "SO"))
 		edit_path_set(game, &game->txt.s->c, file_xpm);
-
-	if (!ft_strcmp(set_graph,"WE"))
+	if (!ft_strcmp(set_graph, "WE"))
 		edit_path_set(game, &game->txt.w->c, file_xpm);
-	if (ft_strcmp(set_graph,"EA"))
+	if (ft_strcmp(set_graph, "EA"))
 		return ;
 	edit_path_set(game, &game->txt.e->c, file_xpm);
 }
