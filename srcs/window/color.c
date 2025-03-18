@@ -26,7 +26,7 @@ void	ft_draw_background(t_game *game, char *data, int size_line)
 		while (x < SCREENX)
 		{
 			if (y < SCREENY / 2)
-				img_data[y * (size_line / 4) + x] =game->txt.ground_color;
+				img_data[y * (size_line / 4) + x] = game->txt.ground_color;
 			else
 				img_data[y * (size_line / 4) + x] = game->txt.roof_color;
 			x++;
@@ -34,4 +34,3 @@ void	ft_draw_background(t_game *game, char *data, int size_line)
 		y++;
 	}
 }
-
