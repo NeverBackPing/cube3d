@@ -14,15 +14,13 @@
 
 void	store_path_fd(t_game *game, char *line, char *set_graph)
 {
-	int			start;
-	int			end;
-	int			i;
-	int			max;
-	char		*file_xpm;
+	int		start;
+	int		end;
+	int		i;
+	int		max;
+	char	*file_xpm;
 
 	i = 0;
-	start = 0;
-	end = 0;
 	if (!ft_strstr(line, ".xpm"))
 	{
 		free(game->line_save);
@@ -30,8 +28,7 @@ void	store_path_fd(t_game *game, char *line, char *set_graph)
 		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, no file.xpm found !\n", 2);
 		exit(0);
 	}
-	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
-		i++;
+	i = skip_spaces(line, i);
 	start = i;
 	while (line[i] && line[i] != ' ' && !escape_sequences(line[i]))
 		i++;
@@ -42,29 +39,6 @@ void	store_path_fd(t_game *game, char *line, char *set_graph)
 	ft_strlcpy(file_xpm, (line + start), max);
 	alloc_graph_set(game, file_xpm, set_graph);
 	free(file_xpm);
-}
-
-void	check_sep(t_game *game, char *line)
-{
-	int	i;
-	int	count_sep;
-
-	i = 0;
-	count_sep = 0;
-	while (line[i])
-	{
-		if (line[i] == ',')
-			count_sep++;
-		i++;
-	}
-	if (count_sep != 2)
-	{
-		free(game->line_save);
-		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
-			bad input RGB detected !\n", 2);
-		exit(0);
-	}
 }
 
 void	store_rgb(t_game *game, char *line, char *set_graph)
@@ -140,13 +114,7 @@ void	set_graphique(t_game *game, char *line)
 				!ft_strcmp(set_graph[i], "C")))
 				check_set_graph(game, line, (char *)set_graph[i]);
 			else
-			{
-				free(game->line_save);
-				free_ressource(game);
-				ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
-					wrong graphics setting detected !\n", 2);
-				exit(0);
-			}
+				set_fail(game);
 		}
 		i++;
 	}
@@ -171,7 +139,7 @@ void	get_set_graph(t_game *game, char *filename)
 			free(line);
 		line = NULL;
 	}
-	if (game->txt.count !=  GRAPH_CHECK)
+	if (game->txt.count != GRAPH_CHECK)
 	{
 		free_ressource(game);
 		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong \

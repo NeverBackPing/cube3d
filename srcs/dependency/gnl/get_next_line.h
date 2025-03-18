@@ -24,7 +24,6 @@
 # include <fcntl.h>
 # include <../includes/main.h>
 
-
 char	*get_next_line(int fd);
 int		is_end(char *buffer);
 char	*clear_s(char *stash);
