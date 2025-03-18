@@ -6,7 +6,7 @@
 /*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:17:06 by sjossain          #+#    #+#             */
-/*   Updated: 2025/03/18 16:37:11 by sjossain         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:33:58 by sjossain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,7 @@ void	alloc_graph_set(t_game *game, char *file_xpm, char *set_graph)
 		free(game->line_save);
 		free_ressource(game);
 		free(file_xpm);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
-			too many graphics setting detected !\n", 2);
+		print_error("\033[0;31mError\033[0m: too many setting detected\n");
 		exit(0);
 	}
 	if (!ft_strcmp(set_graph, "NO"))

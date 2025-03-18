@@ -15,8 +15,7 @@
 void	handler_argument(int ac)
 {
 	if (ac < 2)
-		ft_putstr_fd("\033[0;31mError\033[0m: Please make in \
-			input <./cube3d filename.cub>\n", 2);
+		print_error("\033[0;31mError\033[0m: <./cube3d filename.cub>\n");
 	else
 		ft_putstr_fd("\033[0;31mError\033[0m: Sorry to many argument !\n", 2);
 	exit(0);

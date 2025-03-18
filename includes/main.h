@@ -161,6 +161,8 @@ typedef struct s_env {
 	int			mouse;
 } t_env;
 
+// monitor/error.c
+void	print_error(char *str);
 // monitor/init_struct.c
 void	init_struct(t_game *game);
 void	free_ressource(t_game *game);

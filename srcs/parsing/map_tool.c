@@ -6,7 +6,7 @@
 /*   By: sjossain <sjossain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:17:21 by sjossain          #+#    #+#             */
-/*   Updated: 2025/03/18 16:44:58 by sjossain         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:38:07 by sjossain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ void	count_len_map(t_game *game, char *line)
 		{
 			free(line);
 			free_ressource(game);
-			ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
-				bad setting in map detected!\n", 2);
+			print_error("\033[0;31mError\033[0m: bad setting in map detected!\n");
 			exit(0);
 		}
 		i++;
@@ -55,8 +54,7 @@ void	error_detect(t_game *game)
 	if (game->txt.count_player != 1)
 	{
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
-			no player find or bad config file.cub!\n", 2);
+		print_error("\033[0;31mError\033[0m: no player or bad config file.cub\n");
 		exit(0);
 	}
 }

@@ -60,8 +60,7 @@ int	rgb_check(t_game *game, char *line, int i)
 		{
 			free(game->line_save);
 			free_ressource(game);
-			ft_putstr_fd("\033[0;31mError\033[0m: Sorry, wrong \
-				graphics color detected !\n", 2);
+			print_error("\033[0;31mError\033[0m: Bad graphics color detected !\n");
 			exit(0);
 		}
 		i++;
@@ -75,24 +74,21 @@ void	check_rgb(t_game *game)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
-			bad input RGB detected !\n", 2);
+		print_error("\033[0;31mError\033[0m: bad input RGB detected !\n");
 		exit(0);
 	}
 	if (game->txt.g < 0 || game->txt.g > 255)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
-			bad input RGB detected !\n", 2);
+		print_error("\033[0;31mError\033[0m: bad input RGB detected !\n");
 		exit(0);
 	}
 	if (game->txt.b < 0 || game->txt.b > 255)
 	{
 		free(game->line_save);
 		free_ressource(game);
-		ft_putstr_fd("\033[0;31mError\033[0m: Sorry, \
-			bad input RGB detected !\n", 2);
+		print_error("\033[0;31mError\033[0m: bad input RGB detected !\n");
 		exit(0);
 	}
 }
